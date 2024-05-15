@@ -12,6 +12,7 @@ TaskHandle_t ParseCameraTaskHandle;
 #include "Wire.h"
 #include "Adafruit_BMP280.h"
 #include "Adafruit_MPU6050.h"
+#include "DHT.h"
 
 enum class PARSE_ERROR_CODES {
   PARSE_SUCCESS,
@@ -38,6 +39,11 @@ Adafruit_MPU6050 mpu;
 #define BMP_SDA 10
 #define BMP_SCL 11
 Adafruit_BMP280 bmp;
+
+//Pinos referentes ao DHT:
+#define DHT_GPIO 2
+#define DHTTYPE DHT22
+DHT dht(DHT_GPIO, DHTTYPE) 
 
 void parse_GPS (*pvParameters) {
   for( ; ; ) {
@@ -119,9 +125,8 @@ void parse_DHT (*pvParameters) {
   for( ; ; ) {
     float humidity, temperature;
 
-  
-    DHT.pegar_dados();
-
+    humidity = dht.readHumidity();
+    temperature = dht.readTemperature();
   
     //MQTT data transmission
     MQTT.enviar_dados(tópico---->humidity);
@@ -230,19 +235,20 @@ void setup_BMP() {
 }
   
 void setup_MPU() {
-    if (!mpu.begin()) {
+  if (!mpu.begin()) {
     Serial.println("Failed to find MPU6050 chip");
   }
-mpu.setAccelerometerRange(MPU6050_RANGE_2_G);
 
-mpu.setGyroRange(MPU6050_RANGE_250_DEG);
+  mpu.setAccelerometerRange(MPU6050_RANGE_2_G);
 
-mpu.setFilterBandwidth(MPU6050_BAND_5_HZ);
+  mpu.setGyroRange(MPU6050_RANGE_250_DEG);
+
+  mpu.setFilterBandwidth(MPU6050_BAND_5_HZ);
 
 }
 
 void setup_DHT() {
-
+  dht.begin();
 }
   
 void setup_Camera() {

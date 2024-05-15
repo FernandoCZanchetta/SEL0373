@@ -10,6 +10,7 @@ TaskHandle_t ParseCameraTaskHandle;
 
 #include "SPI.h"
 #include "Wire.h"
+#include "Adafruit_BMP280.h"
 
 enum class PARSE_ERROR_CODES {
   PARSE_SUCCESS,
@@ -26,6 +27,11 @@ using parse_error_t = PARSE_ERROR_CODES;
 #define BUZZER_FREQUENCY 6000
 #define BUZZER_FREQUENCY_RESOLUTION 13 //bits
 #define BUZZER_DURATION 750
+
+//Pinos referentes ao BMP (I2C):
+#define BMP_SDA 10
+#define BMP_SCL 11
+Adafruit_BMP280 bmp;
 
 void parse_GPS (*pvParameters) {
   for( ; ; ) {
@@ -61,7 +67,8 @@ void parse_BMP (*pvParameters) {
     float pressure, temperature;
 
   
-    BMP.pegar_dados();
+    temperature = bmp.readTemperature();
+    pressure = bmp.readPressure();
 
   
     //MQTT data transmission
@@ -70,8 +77,8 @@ void parse_BMP (*pvParameters) {
 
   
     #ifdef ISPRETTYDEBUG
-    Serial.println("Pressão: " + (String )pressure + "\n");
-    Serial.println("Temperatura_BMP: " + (String )temperature + "\n");
+    Serial.println("Pressão: " + (String) pressure + "\n");
+    Serial.println("Temperatura_BMP: " + (String) temperature + "\n");
     #endif
   }
 }
@@ -207,7 +214,16 @@ void setup_GPS() {
 }
   
 void setup_BMP() {
+  if (!bmp.begin()) {
+    Serial.println("Could not find a valid BMP280 sensor, check wiring or try a different address!");
+  }
 
+  /* Default settings from datasheet. */
+  bmp.setSampling(Adafruit_BMP280::MODE_NORMAL,     /* Operating Mode. */
+                  Adafruit_BMP280::SAMPLING_X2,     /* Temp. oversampling */
+                  Adafruit_BMP280::SAMPLING_X16,    /* Pressure oversampling */
+                  Adafruit_BMP280::FILTER_X16,      /* Filtering. */
+                  Adafruit_BMP280::STANDBY_MS_500); /* Standby time. */
 }
   
 void setup_MPU() {

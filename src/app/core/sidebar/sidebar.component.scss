@@ -1,0 +1,47 @@
+@import 'src/styles';
+
+.active-utils {
+  transition: 0.25s;
+  color: $light !important;
+  @extend .fw-bold;
+}
+
+.offcanvas-header {
+  border-bottom: solid 1px rgba(0, 0, 0, 0.15);
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+}
+
+li:not(.expanded) div.page {
+  &:hover {
+    @extend .active-utils;
+    background-color: $secondary;
+
+    hr {
+      color: rgba(0, 0, 0, 0);
+    }
+  }
+
+  border-radius: 6px;
+}
+
+.subtopic a:hover {
+  @extend .active-utils;
+  text-decoration: underline !important;
+}
+
+a:hover {
+  color: inherit !important;
+}
+
+ul li:first-of-type.expanded {
+  @include media-breakpoint-up(lg) {
+    margin-top: 25%;
+    transition: 0.25s;
+  }
+}
+
+.expanded,
+.expanded * {
+  @extend .active-utils;
+  background-color: $primary;
+}

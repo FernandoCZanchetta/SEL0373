@@ -1,0 +1,23 @@
+<nav id="navbar" class="navbar navbar-dark bg-dark px-5" #navbar>
+  <div class="container">
+    <button
+      class="bg-transparent btn-group-vertical navbar-brand border-0 m-0 p-0"
+      (click)="goToHomepage()"
+    >
+      <app-logo class="w-100"></app-logo>
+    </button>
+
+    <button
+      (click)="openSidebar()"
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#sidebar"
+      aria-controls="sidebar"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  </div>
+</nav>

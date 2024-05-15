@@ -1,0 +1,11 @@
+@import 'src/colors';
+
+.social-network-icon a,
+.social-network-icon a:link,
+.social-network-icon a:visited {
+  color: inherit !important;
+}
+
+.social-network-icon button:active {
+  color: $secondary !important;
+}

@@ -1,0 +1,77 @@
+<app-page-title></app-page-title>
+
+<section class="text-justify">
+  <a id="introducao"></a>
+  <p>
+    Durante o período da pandemia, houve a necessidade da adaptação ao modelo de aulas
+    online e, com isso, cada pessoa criou seus métodos de organização para tentar fazer os
+    estudos darem certo. Na realidade das aulas presenciais, algumas das ferramentas
+    exploradas para o ensino a distância também podem ser muito úteis no controle do
+    tempo, da rotina e dos afazeres.
+  </p>
+  <p>
+    Como na faculdade tudo é muito novo, sabemos que pode ser difícil encontrar um método
+    ideal para estudar e se organizar e, por isso, o intuito dessa página é te apresentar
+    a diferentes sites, softwares e materiais para que você possa testá-los e encontrar
+    aquilo que ressoa mais com você, tornando sua experiência no curso mais produtiva,
+    principalmente com as aulas presenciais, onde o tempo acaba ficando mais curto.
+  </p>
+  <p>
+    Também reconhecemos que nessa fase inicial, somos apresentados a um universo novo e
+    muitas vezes recebemos tantas informações que é fácil se perder no meio disso tudo.
+    Então, mostraremos também algumas ferramentas úteis para a área da Engenharia Elétrica
+    e que também serão utilizadas no decorrer do curso. Assim, vocês já podem se preparar
+    e se familiarizar com algumas delas, tornando mais suave o aprendizado e uso das
+    mesmas.
+  </p>
+  <p>
+    Antes de mostrar as ferramentas, nós deixamos aqui dois exemplos de métodos de
+    organização e produtividade para vocês darem uma olhada:
+    <a
+      target="_blank"
+      rel="noreferrer noopener"
+      href="https://todoist.com/productivity-methods/getting-things-done"
+      ><abbr title="Getting Things Done">GTD</abbr></a
+    >
+    e
+    <a target="_blank" rel="noreferrer noopener" href="https://fortelabs.co/blog/para/"
+      ><abbr title="Projects Areas Resources Archives">PARA</abbr> </a
+    >. Além disso, ressaltamos que o sistema de cada um é pessoal, variando de acordo com
+    sua personalidade, seu tempo disponível, a forma que você pensa, suas prioridades e
+    outros parâmetros individuais, não fique frustrado se um método funcionar para um
+    colega e não funcionar para você.
+  </p>
+</section>
+
+<section class="text-justify">
+  <a id="ferramentas"></a>
+
+  <app-title [subtitle]="true">Sites e softwares</app-title>
+  <p>
+    Cada ferramenta, e não somente as listadas abaixo, tem um propósito específico. Por
+    isso, mesmo que algum software ou site tenha mais de uma função, ele provavelmente
+    será o mais eficaz em uma ou duas dessas funções. Abaixo estão as ferramentas que
+    separamos para você:
+  </p>
+
+  <h5>Gerenciador de tarefas:</h5>
+  <app-image-grid [gridItems]="taskManagerLogos"></app-image-grid>
+
+  <h5>Planejamento:</h5>
+  <app-image-grid [gridItems]="planningLogos"></app-image-grid>
+
+  <h5>Anotação:</h5>
+  <app-image-grid [gridItems]="notetakingLogos"></app-image-grid>
+
+  <h5>Outras ferramentas:</h5>
+  <app-image-grid [gridItems]="otherToolsLogos"></app-image-grid>
+
+  <h5>Simulação/Circuito Elétrico:</h5>
+  <app-image-grid [gridItems]="electricalToolsLogos"></app-image-grid>
+
+  <h5>Programação:</h5>
+  <app-image-grid [gridItems]="programmingToolsLogos"></app-image-grid>
+
+  <h5>Gráfico/Matemática:</h5>
+  <app-image-grid [gridItems]="mathematicalToolsLogos"></app-image-grid>
+</section>

@@ -1,0 +1,15 @@
+<app-banner-router></app-banner-router>
+<app-navbar></app-navbar>
+<app-sidebar></app-sidebar>
+
+<main
+  class="container pb-5"
+  [ngStyle]="{ paddingTop: '16px', maxWidth: '70%' }"
+  style="min-height: calc(100vh + 20px - {{ footerElement.offsetHeight }}px)"
+>
+  <router-outlet></router-outlet>
+</main>
+
+<div #footerElement>
+  <app-footer></app-footer>
+</div>

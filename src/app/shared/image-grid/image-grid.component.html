@@ -1,0 +1,59 @@
+<div
+  class="row px-2 my-4 justify-content-center align-items-center"
+  [ngClass]="large ? 'gap-2' : 'gap-5'"
+>
+  <div
+    *ngFor="let item of gridItems"
+    class="{{ item.fill ? 'flex-fill' : '' }} p-0"
+    [ngClass]="large ? 'col-12 col-md-3' : 'col-4 col-md-2 p-lg-3'"
+  >
+    <div *ngIf="!item.modal; else showModal">
+      <figure class="d-block m-auto">
+        <a *ngIf="item.url" [href]="item.url" target="_blank" rel="noreferrer noopener">
+          <img
+            [src]="item.image.src"
+            [alt]="item.image.alt"
+            class="img-fluid d-block m-auto"
+          />
+        </a>
+
+        <img
+          *ngIf="!item.url"
+          [src]="item.image.src"
+          [alt]="item.image.alt"
+          class="img-fluid d-block m-auto"
+        />
+
+        <figcaption
+          *ngIf="item.image.caption"
+          [innerHTML]="item.image.caption | sanitizeHtml"
+          class="text-muted small text-italic text-center"
+        ></figcaption>
+      </figure>
+    </div>
+
+    <ng-template #showModal>
+      <figure class="d-block m-auto">
+        <img
+          (click)="createModal(item.modal!)"
+          [src]="item.image.src"
+          [alt]="item.image.alt"
+          class="cursor-pointer"
+        />
+        <figcaption
+          *ngIf="item.image.caption"
+          [innerHTML]="item.image.caption | sanitizeHtml"
+          class="text-muted small text-italic text-center"
+        ></figcaption>
+      </figure>
+    </ng-template>
+  </div>
+</div>
+
+<app-modal
+  [(isOpen)]="openModal"
+  [image]="modal.image"
+  [title]="modal.title"
+  [text]="modal.text"
+  [url]="modal.url"
+></app-modal>

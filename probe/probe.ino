@@ -11,6 +11,7 @@ TaskHandle_t ParseCameraTaskHandle;
 #include "SPI.h"
 #include "Wire.h"
 #include "Adafruit_BMP280.h"
+#include "Adafruit_MPU6050.h"
 
 enum class PARSE_ERROR_CODES {
   PARSE_SUCCESS,
@@ -27,6 +28,11 @@ using parse_error_t = PARSE_ERROR_CODES;
 #define BUZZER_FREQUENCY 6000
 #define BUZZER_FREQUENCY_RESOLUTION 13 //bits
 #define BUZZER_DURATION 750
+
+//Pinos referentes ao MPU:
+#define MPU_SLC 22
+#define MPU_SDA 21
+Adafruit_MPU6050 mpu;
 
 //Pinos referentes ao BMP (I2C):
 #define BMP_SDA 10
@@ -85,13 +91,10 @@ void parse_BMP (*pvParameters) {
 
 void parse_MPU (*pvParameters) {
   for( ; ; ) {
-    float a_x, a_y, a_z;
-    float angle_x, angle_y, angle_z;
+    sensors_event_t a, g;
+    mpu.getEvent(&a, &g);
 
-  
-    MPU.pegar_dados();
 
-  
     //MQTT data transmission
     MQTT.enviar_dados(tópico---->x_aceleration);
     MQTT.enviar_dados(tópico---->y_aceleration);
@@ -102,12 +105,12 @@ void parse_MPU (*pvParameters) {
 
 
     #ifdef ISPRETTYDEBUG
-    Serial.println("Aceleração Eixo-X: " + (String )a_x + "\n");
-    Serial.println("Aceleração Eixo-Y: " + (String )a_y + "\n");
-    Serial.println("Aceleração Eixo-Z: " + (String )a_z + "\n");
-    Serial.println("Ângulo Eixo-X: " + (String )angle_x + "\n");
-    Serial.println("Ângulo Eixo-Y: " + (String )angle_y + "\n");
-    Serial.println("Ângulo Eixo-Z: " + (String )angle_z + "\n");
+    Serial.println("Aceleração Eixo-X: " + (String) a.acceleration.x + "\n");
+    Serial.println("Aceleração Eixo-Y: " + (String) a.acceleration.y + "\n");
+    Serial.println("Aceleração Eixo-Z: " + (String) a.acceleration.z + "\n");
+    Serial.println("Ângulo Eixo-X: " + (String) g.gyro.x + "\n");
+    Serial.println("Ângulo Eixo-Y: " + (String) g.gyro.y + "\n");
+    Serial.println("Ângulo Eixo-Z: " + (String) g.gyro.z + "\n");
     #endif
   }
 }
@@ -227,9 +230,17 @@ void setup_BMP() {
 }
   
 void setup_MPU() {
+    if (!mpu.begin()) {
+    Serial.println("Failed to find MPU6050 chip");
+  }
+mpu.setAccelerometerRange(MPU6050_RANGE_2_G);
+
+mpu.setGyroRange(MPU6050_RANGE_250_DEG);
+
+mpu.setFilterBandwidth(MPU6050_BAND_5_HZ);
 
 }
-  
+
 void setup_DHT() {
 
 }

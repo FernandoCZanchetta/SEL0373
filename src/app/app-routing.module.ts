@@ -17,8 +17,8 @@ const routes: RouteModel[] = [
           alt: 'Bonito',
         },
         {
-          src: '/assets/images/home/ceu.jpg',
-          alt: 'Céu',
+          src: '/assets/images/home/wheatley.jpg',
+          alt: 'Wheatley',
         },
         {
           src: '/assets/images/home/montanha.jpg',
@@ -27,6 +27,10 @@ const routes: RouteModel[] = [
         {
           src: '/assets/images/home/quadrado.jpg',
           alt: 'Quadrados',
+        },
+        {
+          src: '/assets/images/home/pilares.jpg',
+          alt: 'pilares da criação',
         },
      ],
     },

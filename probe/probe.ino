@@ -8,7 +8,7 @@ TaskHandle_t ParseMPUTaskHandle;
 TaskHandle_t ParseDHTTaskHandle;
 TaskHandle_t ParseCameraTaskHandle;
 
-#include "SPI.h"
+#include "Adafruit_Sensor.h"
 #include "Wire.h"
 #include "Adafruit_BMP280.h"
 #include "Adafruit_MPU6050.h"
@@ -21,8 +21,8 @@ enum class PARSE_ERROR_CODES {
 };
 using parse_error_t = PARSE_ERROR_CODES;
 
+//Pinos referentes ao Buzzer:
 #define GPIO_BUZZER 24
-
 #define BUZZER_PWM_CHANNEL 0 //Avoid use of channels 2, 3, 10, 11, as they make use of timer 1, which is being used for other purposes.
 //More info in: https://github.com/espressif/arduino-esp32/blob/master/cores/esp32/esp32-hal-ledc.c
 #define NO_TONE_FREQUENCY 0
@@ -43,7 +43,7 @@ Adafruit_BMP280 bmp;
 //Pinos referentes ao DHT:
 #define DHT_GPIO 2
 #define DHTTYPE DHT22
-DHT dht(DHT_GPIO, DHTTYPE) 
+DHT dht(DHT_GPIO, DHTTYPE);
 
 void parse_GPS (*pvParameters) {
   for( ; ; ) {
@@ -156,11 +156,9 @@ void parse_Camera (*pvParameters) {
 void setup() {
   Serial.begin(115200);
   Serial.println("Comunicação SERIAL estabelecida!\n");
-
-  [SPI.begin(...)];
   
-  [Wire.begin(...)];
-  [Wire1.begin(...)];
+  Wire.begin(MPU_SDA, MPU_SCL);
+  Wire1.begin(BMP_SDA, MPU_SCL); 
 
   setup_GPS();
   

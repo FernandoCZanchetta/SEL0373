@@ -1,0 +1,126 @@
+<app-page-title></app-page-title>
+
+<section>
+  <p>
+    Um dos grandes diferenciais para o seu crescimento profissional no CAASO são os grupos
+    extracurriculares. Formados e gerenciados por alunos, e auxiliados por professores,
+    esses grupos permitem um contato direto com a prática da engenharia nas áreas mais
+    diversas, bem como um maior engajamento com a comunidade ou causas sociais.
+  </p>
+  <p>
+    São muitas opções de acordo com o seu interesse, você pode construir um carro, robô ou
+    avião para uma competição, fazer parte do grande movimento estudantil, trabalhar com a
+    gestão de pessoas e recursos em diversos projetos ou até mesmo dar aulas para crianças
+    da região. Várias dessas opções serão apresentadas em uma palestra na semana de
+    recepção.
+  </p>
+  <p>
+    Você vai ter oportunidades que oferecem aprendizados que agregam muito para sua
+    formação. Além de conhecer tecnologias diferentes e colocar a mão na massa para
+    conhecer o verdadeiro trabalho de um engenheiro, você também pode conhecer muitas
+    pessoas novas e viver grandes experiências. Em todos os casos, o melhor conselho é:
+  </p>
+  <h6 class="text-center mt-1 mb-2">
+    Aproveite ao máximo tudo o que a universidade tem para oferecer!
+  </h6>
+</section>
+
+<section>
+  <a id="extracurriculares-tecnicas"></a>
+  <app-title [subtitle]="true">Extracurriculares Técnicas</app-title>
+  <p>
+    São grupos voltados para o conhecimento técnico na área da Engenharia, eles são uma
+    forma muito boa de aplicar e estender o conhecimento recebido na graduação.
+  </p>
+</section>
+
+<section>
+  <a id="centro-academico"></a>
+  <app-title [subtitle]="true"
+    >Centro Acadêmico, Secretarias Acadêmicas, Coletivos e Grupos Religiosos</app-title
+  >
+  <p>
+    Uma das formas de atividades extracurriculares bem importantes na USP São Carlos são
+    os grupos representativos. Entre eles, tem o CAASO, que é o Centro Acadêmico da USP -
+    São Carlos, e a SA-SEL, que é a Secretaria Acadêmica da Engenharia Elétrica, a qual
+    representa os alunos da Elétrica. Também existem outros coletivos que representam os
+    alunos de acordo com o tema de cada um.
+  </p>
+</section>
+
+<section class="mb-3">
+  <a id="iniciacao-cientifica"></a>
+  <app-title [subtitle]="true">Iniciações Científicas</app-title>
+  <p>
+    Participar de uma iniciação científica pode ser um incrível oportunidade de
+    aprendizado. Fale com professores que façam pesquisa em alguma área que te interesse
+    para saber mais. As modalidades de iniciação científica oferecida pela EESC são:
+  </p>
+
+  <div>
+    <details>
+      <summary>Programa Institucional de Bolsas de Iniciação Científica (PIBIC)</summary>
+      <p>
+        O Programa Institucional de Bolsas de Iniciação Científica (PIBIC) é voltado para
+        o desenvolvimento do pensamento científico dos estudantes de graduação do ensino
+        superior.
+      </p>
+    </details>
+
+    <details>
+      <summary>
+        Programa Institucional de Bolsas de Iniciação em Desenvolvimento Tecnológico e
+        Inovação (PIBITI)
+      </summary>
+      <p>
+        O Programa Institucional de Bolsas de Iniciação em Desenvolvimento Tecnológico e
+        Inovação (PIBITI) visa estimular estudantes do ensino superior ao desenvolvimento
+        e transferência de novas tecnologias e inovação.
+      </p>
+    </details>
+
+    <details>
+      <summary>Iniciação Científica sem remuneração</summary>
+      <p>
+        Caso o aluno se interesse por um projeto de pesquisa realizado por um docente e
+        tenha tempo disponível para executá-lo, sem prejuízo para suas atividades
+        escolares regulares, o orientador poderá propor à Comissão de Pesquisa um projeto
+        de iniciação científica.
+      </p>
+    </details>
+  </div>
+</section>
+
+<section>
+  <a id="extracurriculares"></a>
+  <app-title [subtitle]="true">Grupos Extracurriculares</app-title>
+  <div class="table-responsive">
+    <table class="table text-center table-bordered table-striped">
+      <thead class="table-primary">
+        <tr>
+          <th scope="col">Grupo</th>
+          <th scope="col">Categoria</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let group of extracurricularGroups">
+          <td>
+            <a [href]="group.url" target="_blank" rel="noopener noreferrer">{{
+              group.name
+            }}</a>
+          </td>
+
+          <td>
+            {{ group.categories.join(', ') }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>
+    OBS: Essa é apenas uma amostra de alguns dos grupos extracurriculares mais conhecidos,
+    também existem outros!
+  </p>
+</section>

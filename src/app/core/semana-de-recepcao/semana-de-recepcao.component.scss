@@ -1,0 +1,17 @@
+@import 'src/styles';
+
+.embedded-calendars {
+  --bs-aspect-ratio: calc((16 / 9) * 100%);
+
+  @include media-breakpoint-up(md) {
+    --bs-aspect-ratio: calc((9 / 21) * 100%);
+  }
+}
+
+.embedded-forms {
+  --bs-aspect-ratio: calc((16 / 11) * 100%);
+
+  @include media-breakpoint-up(md) {
+    --bs-aspect-ratio: 100%;
+  }
+}

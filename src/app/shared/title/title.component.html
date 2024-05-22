@@ -1,0 +1,18 @@
+<div [ngClass]="{ 'mb-3': !subtitle && marginBottom, 'mb-2': subtitle && marginBottom }">
+  <div *ngIf="!subtitle; else subtitleTemplate">
+    <h2 class="m-0">
+      <ng-container *ngTemplateOutlet="tempOutlet"></ng-container>
+    </h2>
+    <hr />
+  </div>
+
+  <ng-template #subtitleTemplate>
+    <h3 class="m-0">
+      <ng-container *ngTemplateOutlet="tempOutlet"></ng-container>
+    </h3>
+  </ng-template>
+
+  <ng-template #tempOutlet>
+    <ng-content></ng-content>
+  </ng-template>
+</div>

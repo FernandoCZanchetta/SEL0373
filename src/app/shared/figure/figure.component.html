@@ -1,0 +1,23 @@
+<figure
+  class="d-block mx-auto w-100"
+  [class.mt-3]="marginTop"
+  [class.mb-3]="marginBottom"
+  [ngClass]="small ? smallClasses : largeClasses"
+>
+  <a *ngIf="url" [href]="url" target="_blank" rel="noreferrer noopener">
+    <img [src]="image.src" [alt]="image.alt" class="img-fluid d-block m-auto w-100" />
+  </a>
+
+  <img
+    *ngIf="!url"
+    [src]="image.src"
+    [alt]="image.alt"
+    class="img-fluid d-block m-auto w-100"
+  />
+
+  <figcaption
+    *ngIf="image.caption"
+    [innerHTML]="image.caption | sanitizeHtml"
+    class="text-muted small text-italic text-center"
+  ></figcaption>
+</figure>

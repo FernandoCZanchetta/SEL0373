@@ -1,0 +1,133 @@
+<app-page-title></app-page-title>
+
+<p>
+  Agora você precisa encontrar um local para chamar de casa, não é mesmo? Pois bem,
+  existem algumas alternativas disponíveis para você escolher, mas para isso é importante
+  conhecer as redondezas.
+</p>
+
+<app-alternating-layout [contents]="textAndImageList"></app-alternating-layout>
+
+<section align="justify">
+  <a id="alojamento"></a>
+  <app-title [subtitle]="true">Alojamento Estudantil no Campus</app-title>
+
+  <p>
+    Há, no Campus, cinco blocos de alojamentos, totalizando 252 vagas. Para garantir uma
+    dessas vagas, é necessário passar por uma seleção dos interessados feita por uma
+    comissão, em que o critério a se avaliar é a situação socioeconômica do aluno de
+    graduação.
+  </p>
+
+  <p>
+    Vale ressaltar que se você escolher o alojamento como moradia, então você somente
+    poderá receber o Auxílio Financeiro disponibilizado pelo PAPFE (Programa de Apoio à
+    Permanência e Formação Estudantil) de forma parcial e vice-versa, estando agora os
+    antigos auxílios disponíveis, como alimentação e transporte, unificados. Para mais
+    informações sobre o PAPFE, clique
+    <a
+      target="_blank"
+      rel="noopener noreferrer"
+      href="https://prip.usp.br/apoio-estudantil/"
+      >aqui</a
+    >, e, sobre o Alojamento, clique
+    <a
+      target="_blank"
+      rel="noopener noreferrer"
+      href="https://www.instagram.com/alojausp/"
+      >aqui</a
+    >.
+  </p>
+
+  <app-image-grid [gridItems]="housingPhotos" [large]="true"></app-image-grid>
+</section>
+
+<section>
+  <a id="grupos-facebook"></a>
+  <app-title [subtitle]="true">Grupos no Facebook</app-title>
+
+  <p>
+    Nos grupos do Facebook, você pode encontrar tanto vagas para repúblicas, quanto para
+    apartamento. Os principais grupos são:
+  </p>
+  <ul>
+    <li>
+      <a
+        target="_blank"
+        rel="noopener noreferrer"
+        href="https://www.facebook.com/groups/moradiaemobilia/"
+        >Moradia e Mobília Federal/Caaso</a
+      >
+    </li>
+    <li>
+      <a
+        target="_blank"
+        rel="noopener noreferrer"
+        href="https://www.facebook.com/groups/republicasdesaocarlos/"
+        >Repúblicas de São Carlos - SP</a
+      >
+    </li>
+    <li>
+      <a
+        target="_blank"
+        rel="noopener noreferrer"
+        href="https://www.facebook.com/groups/moradia.feminina.sanca"
+        >Repúblicas femininas de São Carlos</a
+      >
+    </li>
+  </ul>
+  <p>
+    No
+    <a
+      target="_blank"
+      rel="noopener noreferrer"
+      href="https://sp.olx.com.br/regiao-de-ribeirao-preto/regiao-de-sao-carlos/sao-carlos/imoveis/aluguel"
+      >OLX</a
+    >, você também consegue encontrar algumas vagas disponíveis de moradias.
+  </p>
+</section>
+
+<section>
+  <a id="imobiliarias"></a>
+  <app-title [subtitle]="true">Imobiliárias de São Carlos</app-title>
+  <p>
+    Existem, ao redor do Campus, tanto apartamentos e casas divulgados por imobiliárias,
+    quanto moradias em que você negocia direto com o proprietário. Você consegue entrar em
+    contato com as imobiliárias diretamente pelo site delas e elas te mostrarão diversas
+    opções. Já no caso das casas e apartamentos sem imobiliária, elas são mais difíceis de
+    encontrar; você precisa navegar pelos grupos do Facebook, pelo Marketplace ou procurar
+    por indicações para poder achá-las e entrar em contato com o proprietário. Abaixo
+    citamos algumas das imobiliárias mais conhecidas:
+  </p>
+
+  <app-image-grid [gridItems]="realStateAgencies"></app-image-grid>
+
+  <p>
+    Além disso, esse ano nós conseguimos uma parceria com a
+    <strong
+      ><a href="https://www.roca.com.br/" target="_blank" rel="noopener noreferrer"
+        >Roca Imóveis</a
+      ></strong
+    >!
+  </p>
+
+  <p>
+    Eles tem um ótimo atendimento e diversos imóveis no catálogo, o que pode facilitar a
+    sua busca e deixá-la mais tranquila. Lá é possível encontrar não só apartamentos
+    menores, para aqueles que desejam morar sozinho, mas também apartamentos mais
+    espaçosos para quem deseja dividir um imóvel.
+  </p>
+
+  <p>
+    Pensou que acabava por aí? Você está muito enganado, já que além da qualidade do
+    serviço prestado pela Roca, também conseguimos um ótimo beneficio para você, bixo. Os
+    alunos da elétrica terão direito a
+    <strong>seis meses de seguro incêndio gratuito</strong>!
+  </p>
+
+  <p>
+    Então, não perca tempo e conheça os imóveis que a Roca oferece! Também não se esqueça
+    de informar que você é aluno da elétrica, para poder aproveitar os beneficios que
+    virão junto da sua nova moradia!
+  </p>
+</section>

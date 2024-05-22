@@ -1,0 +1,47 @@
+<ng-template #modal>
+  <div class="modal-header">
+    <!-- link only -->
+    <div *ngIf="url && !image; else titleBlock" class="m-0 p-0">
+      <a [href]="url" target="_blank" rel="noreferrer noopener" class="m-0 p-0">
+        <h4 class="modal-title pull-left">{{ title }}</h4>
+      </a>
+    </div>
+
+    <ng-template #titleBlock
+      ><h4 class="modal-title pull-left">{{ title }}</h4></ng-template
+    >
+
+    <button
+      type="button"
+      class="btn-close close pull-right"
+      aria-label="Close"
+      (click)="this.modalRef?.hide()"
+    >
+      <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <!-- image -->
+    <div>
+      <app-figure
+        *ngIf="image"
+        [image]="image"
+        [url]="url"
+        [extraSmall]="true"
+        [marginTop]="false"
+      ></app-figure>
+    </div>
+
+    <!-- text -->
+    <div class="px-1 pb-2">
+      <div *ngIf="paragraphs" class="text-justify">
+        <p *ngFor="let paragraph of paragraphs">
+          {{ paragraph }}
+        </p>
+      </div>
+
+      <ng-content></ng-content>
+    </div>
+  </div>
+</ng-template>

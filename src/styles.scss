@@ -1,0 +1,114 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import 'colors';
+@import '~bootstrap/scss/bootstrap';
+
+$percentages: (
+  '5': 5%,
+  '10': 10%,
+  '15': 15%,
+  '20': 20%,
+  '25': 25%,
+  '30': 30%,
+  '35': 35%,
+  '40': 40%,
+  '45': 45%,
+  '50': 50%,
+  '55': 55%,
+  '60': 60%,
+  '65': 65%,
+  '70': 70%,
+  '75': 75%,
+  '80': 80%,
+  '85': 85%,
+  '90': 90%,
+  '95': 95%,
+);
+
+@each $value, $color in $grays {
+  .text-gray-#{$value} {
+    color: $color !important;
+  }
+  .border-1px-gray-#{$value} {
+    border: solid 1px $color !important;
+  }
+}
+
+@each $size, $percentage in $percentages {
+  .w-#{$size} {
+    width: $percentage !important;
+  }
+}
+
+@each $breakpoint in map-keys($grid-breakpoints) {
+  @each $size, $percentage in $percentages {
+    @include media-breakpoint-up($breakpoint) {
+      .w-#{$breakpoint}-#{$size} {
+        width: $percentage !important;
+      }
+    }
+  }
+}
+
+html,
+body,
+:root {
+  background-color: $white;
+  font-family: 'Ubuntu', -apple-system, system-ui, BlinkMacSystemFont, 'Segoe UI',
+    'Roboto', 'Oxygen';
+  height: 100vh;
+}
+
+a,
+a:link,
+a:visited {
+  color: $blue;
+}
+
+a:hover {
+  color: $cyan !important;
+  transition: 0.25s;
+}
+
+a:active {
+  color: $dark-blue !important;
+}
+
+a[id] {
+  scroll-margin-top: 60px;
+}
+
+img {
+  @extend .img-fluid;
+}
+
+.overflow-hidden {
+  overflow: hidden hidden;
+}
+
+.v-divider {
+  margin: auto 1.5% auto 1.5%;
+  width: 1px;
+  height: 100%;
+  border-left: 1px solid $gray-500;
+}
+
+.text-justify {
+  text-align: justify !important;
+}
+
+.cursor-pointer {
+  cursor: pointer !important;
+}
+
+details {
+  summary {
+    font-weight: 500;
+  }
+
+  summary + * {
+    @extend .mt-2;
+    @extend .pt-2;
+    border-top: solid 1px $gray-500;
+  }
+}

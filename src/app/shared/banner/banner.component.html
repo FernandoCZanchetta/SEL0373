@@ -1,0 +1,34 @@
+<div class="m-0 p-0 w-100 h-100 user-select-none">
+  <div *ngIf="background" class="banner-container">
+    <div class="bg-dark" [style]="{ opacity: darkness }"></div>
+
+    <div
+      *ngIf="background.length == 1; else carouselBlock"
+      class="banner-bg"
+      [style.backgroundImage]="'url(' + background[0].src + ')'"
+    ></div>
+
+    <ng-template #carouselBlock>
+      <carousel
+        [noPause]="false"
+        [interval]="15000"
+        [showIndicators]="false"
+        [isAnimated]="true"
+      >
+        <slide
+          *ngFor="let image of background"
+          class="banner-bg"
+          [style.backgroundImage]="'url(' + image.src + ')'"
+        ></slide>
+      </carousel>
+    </ng-template>
+  </div>
+
+  <div *ngIf="logo" class="logo-container w-90 w-lg-50">
+    <img [src]="logo.src" [alt]="logo.alt" />
+  </div>
+
+  <div *ngIf="title && !logo" class="text-container text-primary text-center">
+    <h1>{{ title }}</h1>
+  </div>
+</div>

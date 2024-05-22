@@ -1,9 +1,0 @@
-@import 'src/styles';
-
-.embedded-forms {
-  --bs-aspect-ratio: calc((16 / 11) * 100%);
-
-  @include media-breakpoint-up(md) {
-    --bs-aspect-ratio: 100%;
-  }
-}

@@ -8,7 +8,7 @@ export class LogoComponent implements OnInit {
   @Input() subtitle = false
   @Input() minimal = false
 
-  path = '/assets/images/logo/main.svg'
+  path = '/assets/images/logo/main.png'
 
   ngOnInit(): void {
     if (this.subtitle) {

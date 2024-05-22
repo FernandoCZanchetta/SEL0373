@@ -10,7 +10,7 @@ const routes: RouteModel[] = [
     path: '',
     component: HomeComponent,
     data: {
-      title: 'Projetos em IoT',
+      title: 'SHARP_PROBE',
       background: [
         {
           src: '/assets/images/home/noite.jpg',
@@ -22,13 +22,13 @@ const routes: RouteModel[] = [
         },
         {
           src: '/assets/images/home/montanha.jpg',
-          alt: 'Bixos ingressantes de 2023',
+          alt: 'Montanha',
         },
         {
           src: '/assets/images/home/quadrado.jpg',
-          alt: 'Bixos ingressantes de 2023',
+          alt: 'Quadrados',
         },
-      ],
+     ],
     },
   }
 ]

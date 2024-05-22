@@ -8,7 +8,7 @@ import { Subscription } from 'rxjs'
   templateUrl: './banner-router.component.html',
 })
 export class BannerRouterComponent implements OnInit, OnDestroy {
-  currentDarkness: string | number = '55%'
+  currentDarkness: string | number = '10%'
   currentImages: ImageModel[] = []
   currentLogo?: ImageModel
   currentTitle = ''
@@ -22,7 +22,7 @@ export class BannerRouterComponent implements OnInit, OnDestroy {
         const data: RouteDataModel = (route.state.root.firstChild?.data ??
           {}) as RouteDataModel
 
-        this.currentDarkness = data.bgDarkness ?? '55%'
+        this.currentDarkness = data.bgDarkness ?? '10%'
         this.currentImages = data.background
         this.currentLogo = data.logo
         this.currentTitle = data.title

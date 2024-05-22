@@ -21,12 +21,13 @@ $black: #000;
 
 // scss-docs-start color-variables
 $dark-blue: #0a2d61;
-$blue: #228ebf;
+$blue: #22bf5cc7;
 $indigo: #6610f2;
 $purple: #6f42c1;
 $pink: #d63384;
 $red: #dc3545;
 $orange: #ff9900;
+$light-orange: #f4c57e;
 $yellow: #ffdb66;
 $green: #198754;
 $teal: #20c997;
@@ -34,8 +35,8 @@ $cyan: #64c1c7;
 // scss-docs-end color-variables
 
 // scss-docs-start theme-color-variables
-$primary: $blue;
-$secondary: $dark-blue;
+$primary: $orange;
+$secondary: $light-orange;
 $success: $green;
 $info: $cyan;
 $warning: $orange;

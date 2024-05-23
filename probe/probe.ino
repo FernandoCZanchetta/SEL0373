@@ -13,6 +13,9 @@ TaskHandle_t ParseCameraTaskHandle;
 #include "Adafruit_BMP280.h"
 #include "Adafruit_MPU6050.h"
 #include "DHT.h"
+#include "Wifi.h"
+#include "Adafruit_MQTT.h"
+#include "Adafruit_MQTT_Client.h"
 
 enum class PARSE_ERROR_CODES {
   PARSE_SUCCESS,
@@ -45,6 +48,18 @@ Adafruit_BMP280 bmp;
 #define DHTTYPE DHT22
 DHT dht(DHT_GPIO, DHTTYPE);
 
+//Definições referentes ao Wifi:
+#define WLAN_SSID "LabMicros"
+#define WLAN_PASS "seluspeesc@"
+WiFiClient client;
+
+//Definições referentes ao mqtt:
+#define MQTT_SERVER "igbt.eesc.usp.br"
+#define MQTT_SERVERPORT 1883
+#define MQTT_USERNAME "mqtt"
+#define MQTT_KEY "mqtt_123_abc"
+Adafruit_MQTT_Client mqtt(&client, MQTT_SERVER, MQTT_SERVERPORT, MQTT_USERNAME, MQTT_KEY);
+
 void parse_GPS (*pvParameters) {
   for( ; ; ) {
     float latitude, longitude, altitude;
@@ -55,12 +70,12 @@ void parse_GPS (*pvParameters) {
 
   
     //MQTT data transmission
-    MQTT.publish(tópico---->latitude);
-    MQTT.enviar_dados(tópico---->longitude);
-    MQTT.enviar_dados(tópico---->altitude);
-    MQTT.enviar_dados(tópico---->hours);
-    MQTT.enviar_dados(tópico---->minutes);
-    MQTT.enviar_dados(tópico---->seconds);
+    Adafruit_MQTT_Publish(&mqtt, "sharp_probe/latitude").publish(latitude);
+    Adafruit_MQTT_Publish(&mqtt, "sharp_probe/longitude").publish(longitude);
+    Adafruit_MQTT_Publish(&mqtt, "sharp_probe/altitude").publish(altitude);
+    Adafruit_MQTT_Publish(&mqtt, "sharp_probe/horas").publish(hours);
+    Adafruit_MQTT_Publish(&mqtt, "sharp_probe/minutos").publish(minutes);
+    Adafruit_MQTT_Publish(&mqtt, "sharp_probe/segundos").publish(seconds);
     
 
     #ifdef ISPRETTYDEBUG
@@ -84,8 +99,8 @@ void parse_BMP (*pvParameters) {
 
   
     //MQTT data transmission
-    MQTT.enviar_dados(tópico---->pressure);
-    MQTT.enviar_dados(tópico---->BMP_temperature);
+    Adafruit_MQTT_Publish(&mqtt, "sharp_probe/pressão").publish(pressure);
+    Adafruit_MQTT_Publish(&mqtt, "sharp_probe/temperatura_bmp").publish(temperature);
 
   
     #ifdef ISPRETTYDEBUG
@@ -102,12 +117,12 @@ void parse_MPU (*pvParameters) {
 
 
     //MQTT data transmission
-    MQTT.enviar_dados(tópico---->x_aceleration);
-    MQTT.enviar_dados(tópico---->y_aceleration);
-    MQTT.enviar_dados(tópico---->z_aceleration);
-    MQTT.enviar_dados(tópico---->x_angle);
-    MQTT.enviar_dados(tópico---->y_angle);
-    MQTT.enviar_dados(tópico---->z_angle);
+    Adafruit_MQTT_Publish(&mqtt, "sharp_probe/aceleração_x").publish(a.acceleration.x);
+    Adafruit_MQTT_Publish(&mqtt, "sharp_probe/aceleração_y").publish(a.acceleration.y);
+    Adafruit_MQTT_Publish(&mqtt, "sharp_probe/aceleração_z").publish(a.acceleration.z);
+    Adafruit_MQTT_Publish(&mqtt, "sharp_probe/angulo_x").publish(g.gyro.x);
+    Adafruit_MQTT_Publish(&mqtt, "sharp_probe/angulo_y").publish(g.gyro.y);
+    Adafruit_MQTT_Publish(&mqtt, "sharp_probe/angulo_z").publish(g.gyro.z);
 
 
     #ifdef ISPRETTYDEBUG
@@ -129,8 +144,8 @@ void parse_DHT (*pvParameters) {
     temperature = dht.readTemperature();
   
     //MQTT data transmission
-    MQTT.enviar_dados(tópico---->humidity);
-    MQTT.enviar_dados(tópico---->DHT_temperature);
+    Adafruit_MQTT_Publish(&mqtt, "sharp_probe/umidade").publish(humidity);
+    Adafruit_MQTT_Publish(&mqtt, "sharp_probe/temperatura_dht").publish(temperature);
 
 
     #ifdef ISPRETTYDEBUG
@@ -159,6 +174,15 @@ void setup() {
   
   Wire.begin(MPU_SDA, MPU_SCL);
   Wire1.begin(BMP_SDA, MPU_SCL); 
+
+  WiFi.begin(WLAN_SSID, WLAN_PASS);
+  
+  while (WiFi.status() != WL_CONNECTED) {
+    Serial.print(".");
+    delay(500);
+  }
+
+  MQTT_connect();
 
   setup_GPS();
   
@@ -251,6 +275,28 @@ void setup_DHT() {
   
 void setup_Camera() {
 
+}
+
+void MQTT_connect() {
+  int8_t ret;
+
+  // Stop if already connected.
+  if (mqtt.connected()) {
+    return;
+  }
+
+  uint8_t retries = 3;
+  while ((ret = mqtt.connect()) != 0) { // connect will return 0 for connected
+       Serial.println(mqtt.connectErrorString(ret));
+       Serial.println("Retrying MQTT connection in 5 seconds...");
+       mqtt.disconnect();
+       delay(5000);  // wait 5 seconds
+       retries--;
+       if (retries == 0) {
+         // basically die and wait for WDT to reset me
+         while (1);
+       }
+  }
 }
 
 void buzz() {

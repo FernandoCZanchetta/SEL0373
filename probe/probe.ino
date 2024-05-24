@@ -33,8 +33,9 @@ using parse_error_t = PARSE_ERROR_CODES;
 #define BUZZER_DURATION 750
 
 //Pinos referentes ao MPU:
-#define MPU_SLC 22
-#define MPU_SDA 21
+#define MPU_SDA 20
+#define MPU_SCL 21
+#define MPU_I2C_ADRESS 0x68
 Adafruit_MPU6050 mpu;
 
 //Pinos referentes ao BME (I2C):
@@ -110,17 +111,17 @@ void parse_BME (*pvParameters) {
   
     #ifdef ISPRETTYDEBUG
     Serial.println("Pressão: " + (String) pressure + " hPa");
-    Serial.println("Temperatura_BME: " + (String) temperature + " °C");
-    Serial.println("Altitude_BME: " + (String) altitude + " m");
-    Serial.println("Humidade_BME: " + (String) humidity + " %");
+    Serial.println("Temperatura BME: " + (String) temperature + " °C");
+    Serial.println("Altitude BME: " + (String) altitude + " m");
+    Serial.println("Humidade BME: " + (String) humidity + " %");
     #endif
   }
 }
 
 void parse_MPU (*pvParameters) {
   for( ; ; ) {
-    sensors_event_t a, g;
-    mpu.getEvent(&a, &g);
+    sensors_event_t a, g, temp;
+    mpu.getEvent(&a, &g, &temp);
 
 
     //MQTT data transmission
@@ -130,15 +131,17 @@ void parse_MPU (*pvParameters) {
     Adafruit_MQTT_Publish(&mqtt, "sharp_probe/angulo_x").publish(g.gyro.x);
     Adafruit_MQTT_Publish(&mqtt, "sharp_probe/angulo_y").publish(g.gyro.y);
     Adafruit_MQTT_Publish(&mqtt, "sharp_probe/angulo_z").publish(g.gyro.z);
+    Adafruit_MQTT_Publish(&mqtt, "sharp_probe/temperatura_mpu").publish(temp.temperature);
 
 
     #ifdef ISPRETTYDEBUG
-    Serial.println("Aceleração Eixo-X: " + (String) a.acceleration.x + "\n");
-    Serial.println("Aceleração Eixo-Y: " + (String) a.acceleration.y + "\n");
-    Serial.println("Aceleração Eixo-Z: " + (String) a.acceleration.z + "\n");
-    Serial.println("Ângulo Eixo-X: " + (String) g.gyro.x + "\n");
-    Serial.println("Ângulo Eixo-Y: " + (String) g.gyro.y + "\n");
-    Serial.println("Ângulo Eixo-Z: " + (String) g.gyro.z + "\n");
+    Serial.println("Aceleração Eixo-X: " + (String) a.acceleration.x + " m/s^2");
+    Serial.println("Aceleração Eixo-Y: " + (String) a.acceleration.y + " m/s^2");
+    Serial.println("Aceleração Eixo-Z: " + (String) a.acceleration.z + " m/s^2");
+    Serial.println("Ângulo Eixo-X: " + (String) g.gyro.x + " rad/s");
+    Serial.println("Ângulo Eixo-Y: " + (String) g.gyro.y + " rad/s");
+    Serial.println("Ângulo Eixo-Z: " + (String) g.gyro.z + " rad/s");
+    Serial.println("Temperatura MPU: " + (String) temp.temperature + " °C");
     #endif
   }
 }

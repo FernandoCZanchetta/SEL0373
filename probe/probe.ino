@@ -3,13 +3,13 @@
 //#define ISPRETTYDEBUG 1
 
 TaskHandle_t ParseGPSTaskHandle;
-TaskHandle_t ParseBMPTaskHandle;
+TaskHandle_t ParseBMETaskHandle;
 TaskHandle_t ParseMPUTaskHandle;
 TaskHandle_t ParseDHTTaskHandle;
 
 #include "Adafruit_Sensor.h"
 #include "Wire.h"
-#include "Adafruit_BMP280.h"
+#include "Adafruit_BME280.h"
 #include "Adafruit_MPU6050.h"
 #include "DHT.h"
 #include "Wifi.h"
@@ -37,10 +37,12 @@ using parse_error_t = PARSE_ERROR_CODES;
 #define MPU_SDA 21
 Adafruit_MPU6050 mpu;
 
-//Pinos referentes ao BMP (I2C):
-#define BMP_SDA 10
-#define BMP_SCL 11
-Adafruit_BMP280 bmp;
+//Pinos referentes ao BME (I2C):
+#define BME_SDA 8
+#define BME_SCL 9
+#define BME_I2C_ADDRESS 0x76
+#define SEALEVELPRESSURE_HPA (1013.25)
+Adafruit_BME280 bme;
 
 //Pinos referentes ao DHT:
 #define DHT_GPIO 2
@@ -88,23 +90,29 @@ void parse_GPS (*pvParameters) {
   }
 }
 
-void parse_BMP (*pvParameters) {
+void parse_BME (*pvParameters) {
   for( ; ; ) {
-    float pressure, temperature;
+    float pressure, temperature, altitude, humidity;
 
   
-    temperature = bmp.readTemperature();
-    pressure = bmp.readPressure();
+    temperature = bme.readTemperature();
+    pressure = bme.readPressure();
+    altitude = bme.readAltitude(SEALEVELPRESSURE_HPA);
+    humidity = bme.readHumidity();
 
   
     //MQTT data transmission
     Adafruit_MQTT_Publish(&mqtt, "sharp_probe/pressão").publish(pressure);
-    Adafruit_MQTT_Publish(&mqtt, "sharp_probe/temperatura_bmp").publish(temperature);
+    Adafruit_MQTT_Publish(&mqtt, "sharp_probe/temperatura_bme").publish(temperature);
+    Adafruit_MQTT_Publish(&mqtt, "sharp_probe/altitude_bme").publish(altitude);
+    Adafruit_MQTT_Publish(&mqtt, "sharp_probe/humidade_bme").publish(humidity);
 
   
     #ifdef ISPRETTYDEBUG
-    Serial.println("Pressão: " + (String) pressure + "\n");
-    Serial.println("Temperatura_BMP: " + (String) temperature + "\n");
+    Serial.println("Pressão: " + (String) pressure + " hPa");
+    Serial.println("Temperatura_BME: " + (String) temperature + " °C");
+    Serial.println("Altitude_BME: " + (String) altitude + " m");
+    Serial.println("Humidade_BME: " + (String) humidity + " %");
     #endif
   }
 }
@@ -158,8 +166,8 @@ void setup() {
   Serial.begin(115200);
   Serial.println("Comunicação SERIAL estabelecida!\n");
   
-  Wire.begin(MPU_SDA, MPU_SCL);
-  Wire1.begin(BMP_SDA, MPU_SCL); 
+  Wire.begin(BME_SDA, BME_SCL);
+  Wire1.begin(MPU_SDA, MPU_SCL); 
 
   WiFi.begin(WLAN_SSID, WLAN_PASS);
   
@@ -172,7 +180,7 @@ void setup() {
 
   setup_GPS();
   
-  setup_BMP();
+  setup_BME();
   
   setup_MPU();
   
@@ -192,10 +200,10 @@ void setup() {
     Serial.println("Tarefa 'Parse GPS' criada com sucesso!\n");
   }
 
-  UBaseType_t uxHighWaterMarkParseBMP = 100 * configMINIMAL_STACK_SIZE;
+  UBaseType_t uxHighWaterMarkParseBME = 100 * configMINIMAL_STACK_SIZE;
 
-  if ((xTaskCreate(parse_BMP, "Parse BMP", uxHighWaterMarkParseBMP, NULL, 2, &ParseBMPTaskHandle)) == pdPASS) {
-    Serial.println("Tarefa 'Parse BMP' criada com sucesso!\n");
+  if ((xTaskCreate(parse_BME, "Parse BME", uxHighWaterMarkParseBME, NULL, 2, &ParseBMETaskHandle)) == pdPASS) {
+    Serial.println("Tarefa 'Parse BME' criada com sucesso!\n");
   }
 
   UBaseType_t uxHighWaterMarkParseMPU = 100 * configMINIMAL_STACK_SIZE;
@@ -221,17 +229,18 @@ void setup_GPS() {
 
 }
   
-void setup_BMP() {
-  if (!bmp.begin()) {
-    Serial.println("Could not find a valid BMP280 sensor, check wiring or try a different address!");
+void setup_BME() {
+  if (!bme.begin(BME_I2C_ADDRESS, &Wire)) {
+    Serial.println("Could not find a valid BME280 sensor, check wiring or try a different address!");
   }
 
   /* Default settings from datasheet. */
-  bmp.setSampling(Adafruit_BMP280::MODE_NORMAL,     /* Operating Mode. */
-                  Adafruit_BMP280::SAMPLING_X2,     /* Temp. oversampling */
-                  Adafruit_BMP280::SAMPLING_X16,    /* Pressure oversampling */
-                  Adafruit_BMP280::FILTER_X16,      /* Filtering. */
-                  Adafruit_BMP280::STANDBY_MS_500); /* Standby time. */
+  bme.setSampling(Adafruit_BME280::MODE_NORMAL,       /* Operating Mode */
+                  Adafruit_BME280::SAMPLING_X16,      /* Temperature Oversampling */
+                  Adafruit_BME280::SAMPLING_X16,      /* Pressure Oversampling */
+                  Adafruit_BME280::FILTER_X16,        /* Humidity Oversampling */
+                  Adafruit_BME280::FILTER_OFF,        /* Filtering */      
+                  Adafruit_BME280::STANDBY_MS_0_5);   /* Standby Time */
 }
   
 void setup_MPU() {

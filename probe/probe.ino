@@ -6,7 +6,6 @@ TaskHandle_t ParseGPSTaskHandle;
 TaskHandle_t ParseBMPTaskHandle;
 TaskHandle_t ParseMPUTaskHandle;
 TaskHandle_t ParseDHTTaskHandle;
-TaskHandle_t ParseCameraTaskHandle;
 
 #include "Adafruit_Sensor.h"
 #include "Wire.h"
@@ -155,19 +154,6 @@ void parse_DHT (*pvParameters) {
   }
 }
 
-void parse_Camera (*pvParameters) {
-  for( ; ; ) {
-    variável imagem; //ver na biblioteca de Camera da ESP32
-
-    if(MQTT.read(tópico---->pictures) == true) {
-      Camera.tirar_foto() //ver na biblioteca de Camera ESP32
-  
-      //MQTT data transmission
-      MQTT.attach(tópico---->pictures); //.attach para enviar uma foto e .publish para enviar texto, como foi nas outras funções (fernandao disse de cabeca, pesquisar melhor)
-    }
-  }
-}
-
 void setup() {
   Serial.begin(115200);
   Serial.println("Comunicação SERIAL estabelecida!\n");
@@ -190,9 +176,7 @@ void setup() {
   
   setup_MPU();
   
-  setup_DHT();
-  
-  setup_Camera(); 
+  setup_DHT(); 
 
   pinMode(GPIO_BUZZER, OUTPUT);
   Serial.println("Modo dos pinos definidos!\n");
@@ -224,12 +208,6 @@ void setup() {
 
   if ((xTaskCreate(parse_DHT, "Parse DHT", uxHighWaterMarkParseDHT, NULL, 2, &ParseDHTTaskHandle)) == pdPASS) {
     Serial.println("Tarefa 'Parse DHT' criada com sucesso!\n");
-  }
-
-  UBaseType_t uxHighWaterMarkParseCamera = 100 * configMINIMAL_STACK_SIZE;
-
-  if ((xTaskCreate(parse_Camera, "Parse Camera", uxHighWaterMarkParseCamera, NULL, 2, &ParseCameraTaskHandle)) == pdPASS) {
-    Serial.println("Tarefa 'Parse Camera' criada com sucesso!\n");
   }
 
   buzz();
@@ -272,30 +250,30 @@ void setup_MPU() {
 void setup_DHT() {
   dht.begin();
 }
-  
-void setup_Camera() {
-
-}
 
 void MQTT_connect() {
   int8_t ret;
+  uint8_t retries = 5;
 
-  // Stop if already connected.
   if (mqtt.connected()) {
     return;
   }
 
-  uint8_t retries = 3;
-  while ((ret = mqtt.connect()) != 0) { // connect will return 0 for connected
-       Serial.println(mqtt.connectErrorString(ret));
-       Serial.println("Retrying MQTT connection in 5 seconds...");
-       mqtt.disconnect();
-       delay(5000);  // wait 5 seconds
-       retries--;
-       if (retries == 0) {
-         // basically die and wait for WDT to reset me
-         while (1);
-       }
+  
+  while ((ret = mqtt.connect()) != 0) { //Connect will return 0 for connected
+    Serial.println(mqtt.connectErrorString(ret));
+    Serial.println("Retrying MQTT connection in 5 seconds...");
+    
+    mqtt.disconnect();
+    
+    delay(5000);
+    
+    retries--;
+    
+    if (retries == 0) {
+      //Basically die and wait for WDT to reset me
+      while (1);
+    }
   }
 }
 

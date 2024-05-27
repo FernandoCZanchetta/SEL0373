@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core'
 import { RouterModule, Routes } from '@angular/router'
-import {
-  HomeComponent,
-} from '@core'
+import { HomeComponent } from '@core'
 import { RouteModel } from '@models'
 
 const routes: RouteModel[] = [
@@ -32,9 +30,9 @@ const routes: RouteModel[] = [
           src: '/assets/images/home/pilares.jpg',
           alt: 'pilares da criação',
         },
-     ],
+      ],
     },
-  }
+  },
 ]
 
 @NgModule({

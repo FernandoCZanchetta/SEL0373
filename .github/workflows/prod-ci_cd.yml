@@ -1,5 +1,9 @@
 name: Production Environment CI/CD
 
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
 on:
   push:
     branches:
@@ -13,7 +17,7 @@ jobs:
         node-version: [12.x, 14.x, 16.x]
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v2
@@ -30,21 +34,16 @@ jobs:
 
     steps:
     - name: 🚚 Get latest code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
-    - name: Use Node.js 16
-      uses: actions/setup-node@v2
-      with:
-        node-version: '16'
+    - name: ⌨️ Use Vercell CLI
+      run: npm install --global vercel@canary
 
-    - name: 🔨 Build Project
-      run: |
-        npm ci
-        npm run build:prod
+    - name: 🖥️ Pull Vercel Environment Information
+      run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+
+    - name: 🔨 Build Project Artifacts
+      run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
 
     - name: 📂 Sync Files
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: dist/SEL0373
-        enable_jekyll: true
+      run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}

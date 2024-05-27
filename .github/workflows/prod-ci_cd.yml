@@ -3,7 +3,7 @@ name: Production Environment CI/CD
 on:
   push:
     branches:
-      - gh-pages
+      - main
 
 jobs:
   lint_prod:
@@ -28,14 +28,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: lint_prod
 
-    permissions:
-      pages: write
-      id-token: write
-
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-
     steps:
     - name: 🚚 Get latest code
       uses: actions/checkout@v2
@@ -50,5 +42,9 @@ jobs:
         npm ci
         npm run build:prod
 
-    - name: 📂 Sync files
-      uses: actions/deploy-pages@v4
+    - name: 📂 Sync Files
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: dist/SEL0373
+        enable_jekyll: true

@@ -43,10 +43,9 @@ jobs:
         npm run build
 
     - name: 📂 Sync files
-      uses: SamKirkland/FTP-Deploy-Action@4.2.0
+uses: peaceiris/actions-gh-pages@v3
       with:
-        server: ${{ secrets.ftp_dev_host }}
-        username: ${{ secrets.ftp_dev_username }}
-        password: ${{ secrets.ftp_dev_password }}
-        local-dir: ./dist/site/
-        server-dir:  /public_html/
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: dist/SEL0373
+        enable_jekyll: true
+

@@ -131,3 +131,4 @@ dist
 
 # Angular files
 .angular
+node_modules

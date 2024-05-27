@@ -46,6 +46,6 @@ jobs:
       uses: peaceiris/actions-gh-pages@v4
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: dist/SEL0373
+        publish_dir: dist/site
         enable_jekyll: true
 

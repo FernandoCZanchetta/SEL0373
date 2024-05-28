@@ -46,7 +46,8 @@ Adafruit_MPU6050 mpu;
 Adafruit_BME280 bme;
 
 //Pinos referentes ao DHT:
-#define DHT_GPIO 2
+#define DHT_AQUISITION_DELAY 2000
+#define DHT_GPIO 7
 #define DHTTYPE DHT22
 DHT dht(DHT_GPIO, DHTTYPE);
 
@@ -106,14 +107,14 @@ void parse_BME (*pvParameters) {
     Adafruit_MQTT_Publish(&mqtt, "sharp_probe/pressão").publish(pressure);
     Adafruit_MQTT_Publish(&mqtt, "sharp_probe/temperatura_bme").publish(temperature);
     Adafruit_MQTT_Publish(&mqtt, "sharp_probe/altitude_bme").publish(altitude);
-    Adafruit_MQTT_Publish(&mqtt, "sharp_probe/humidade_bme").publish(humidity);
+    Adafruit_MQTT_Publish(&mqtt, "sharp_probe/umidade_bme").publish(humidity);
 
   
     #ifdef ISPRETTYDEBUG
     Serial.println("Pressão: " + (String) pressure + " hPa");
     Serial.println("Temperatura BME: " + (String) temperature + " °C");
     Serial.println("Altitude BME: " + (String) altitude + " m");
-    Serial.println("Humidade BME: " + (String) humidity + " %");
+    Serial.println("Humidade BME: " + (String) humidity + " %\n");
     #endif
   }
 }
@@ -141,27 +142,32 @@ void parse_MPU (*pvParameters) {
     Serial.println("Ângulo Eixo-X: " + (String) g.gyro.x + " rad/s");
     Serial.println("Ângulo Eixo-Y: " + (String) g.gyro.y + " rad/s");
     Serial.println("Ângulo Eixo-Z: " + (String) g.gyro.z + " rad/s");
-    Serial.println("Temperatura MPU: " + (String) temp.temperature + " °C");
+    Serial.println("Temperatura MPU: " + (String) temp.temperature + " °C\n");
     #endif
   }
 }
 
 void parse_DHT (*pvParameters) {
   for( ; ; ) {
-    float humidity, temperature;
+    float humidity, temperature, heatindex;
 
     humidity = dht.readHumidity();
     temperature = dht.readTemperature();
+    heatindex = dht.computeHeatIndex(temperature, humidity, false);
   
     //MQTT data transmission
-    Adafruit_MQTT_Publish(&mqtt, "sharp_probe/umidade").publish(humidity);
+    Adafruit_MQTT_Publish(&mqtt, "sharp_probe/umidade_dht").publish(humidity);
     Adafruit_MQTT_Publish(&mqtt, "sharp_probe/temperatura_dht").publish(temperature);
+    Adafruit_MQTT_Publish(&mqtt, "sharp_probe/sensação_termica").publish(heatindex);
 
 
     #ifdef ISPRETTYDEBUG
-    Serial.println("Umidade: " + (String )humidity + "\n");
-    Serial.println("Temperatura_DHT: " + (String )temperature + "\n");
+    Serial.println("Umidade: " + (String) humidity + " %");
+    Serial.println("Temperatura_DHT: " + (String) temperature + " °C");
+    Serial.println("Sensação Térmica: " + (String) heatindex + " °C\n");
     #endif
+
+    vTaskDelay(DHT_AQUISITION_DELAY / portTICK_PERIOD_MS);
   }
 }
 

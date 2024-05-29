@@ -1,5 +1,5 @@
 import { Component } from '@angular/core'
-import { AlternatingLayoutModel,ImageGridItemModel } from '@models'
+import { AlternatingLayoutModel, ImageGridItemModel, ImageModel } from '@models'
 import { SidebarService } from '@services'
 
 @Component({
@@ -10,15 +10,16 @@ import { SidebarService } from '@services'
 export class TestPageComponent {
   textAndImageList: AlternatingLayoutModel[] = [
     {
-      title: 'Entrada da USP',
+      title: 'Montanha',
       subtitle: true,
       image: {
-        alt: 'mapa do campus I',
+        alt: 'Montanha',
         src: '/assets/images/home/montanha.jpg',
-        caption: 'Ola só esses relevos',
+        caption: 'Olha só esses relevos',
       },
     },
   ]
+
   exemplosPhotos: ImageGridItemModel[] = [
     {
       image: {
@@ -41,5 +42,24 @@ export class TestPageComponent {
         caption: 'querer',
       },
     },      
+  ]
+
+  modalExemplo: ImageGridItemModel[] = [
+    {
+      image: {
+        src: '/assets/images/home/amigo.png',
+        alt: 'Amigo',
+        caption: 'Fiel',
+      },
+      modal: {
+        image: {
+          src: '/assets/images/home/legal.png',
+          alt: 'Combatente',
+        },
+        text: 'Gu gu da da',
+        title: 'Olha só essa guitarra',
+        url: 'https://br.yamaha.com/pt/products/musical_instruments/guitars_basses/el_guitars/rs_2022/index.html',
+      },
+    },
   ]
 }

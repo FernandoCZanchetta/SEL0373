@@ -6,10 +6,10 @@ import {
   FooterComponent,
   GroupsPanelComponent,
   HomeComponent,
-  TestPageComponent,
   NavbarComponent,
   PageTitleComponent,
   SidebarComponent,
+  TestPageComponent,
 } from '@core'
 import { SanitizeHtmlPipe } from '@pipes'
 import {

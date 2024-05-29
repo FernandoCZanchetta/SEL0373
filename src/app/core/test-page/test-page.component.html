@@ -5,7 +5,16 @@
 
   <app-title [subtitle]="true"></app-title>
   <p>
-Página dev test  </p>
+Página dev test  
+</p>
+
+    Colocar:
+    <ul>
+      <li>Dashboard com os dados que a gente precisa</li>
+      <li>Altitute, umidade</li>
+      <li>Modal com histórico e gráfico dos dados</li>
+      <li>Tirar fotos -> manda requisição mqtt (pacote ngx/mqtt) e receber ela</li>
+    </ul>
 
   <app-alternating-layout [contents]="textAndImageList"></app-alternating-layout>
 
@@ -18,4 +27,6 @@ Página dev test  </p>
     </p>
   
     <app-image-grid [gridItems]="exemplosPhotos" [large]="true"></app-image-grid>
+
+    <app-image-grid [gridItems]="modalExemplo"></app-image-grid>
 </section>

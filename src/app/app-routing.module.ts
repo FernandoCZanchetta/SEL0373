@@ -25,7 +25,7 @@ const routes: RouteModel[] = [
         title: 'SHARP_PROBE',
         background: [
           {
-            src: '/assets/images/home/wheatley.jpg',
+            src: '/assets/images/home/quadrado.jpg',
             alt: 'SPaCE',
           },
         ],

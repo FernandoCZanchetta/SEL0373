@@ -1,8 +1,8 @@
 name: Dynamic Template
 
 on:
-  create:
-  workflow_dispatch:
+  push:
+    workflow_dispatch:
 
 jobs:
   update_templates:

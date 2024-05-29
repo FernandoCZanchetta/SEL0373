@@ -13,7 +13,7 @@ jobs:
         uses: actions/checkout@dev
 
       - name: "💾  Github Repository Metadata"
-        uses: varunsridharan/action-repository-meta@main
+        uses: varunsridharan/action-repository-meta@dev
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

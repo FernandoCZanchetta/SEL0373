@@ -12,7 +12,7 @@ TaskHandle_t ParseDHTTaskHandle;
 #include "Adafruit_BME280.h"
 #include "Adafruit_MPU6050.h"
 #include "DHT.h"
-#include "Wifi.h"
+#include "WiFi.h"
 #include "Adafruit_MQTT.h"
 #include "Adafruit_MQTT_Client.h"
 #include "NEO8M/ublox_neo8.h"
@@ -72,28 +72,35 @@ WiFiClient client;
 #define MQTT_KEY "mqtt_123_abc"
 Adafruit_MQTT_Client mqtt(&client, MQTT_SERVER, MQTT_SERVERPORT, MQTT_USERNAME, MQTT_KEY);
 
-void parse_GPS (*pvParameters) {
+void parse_GPS (void *pvParameters) {
   for( ; ; ) {
     ublox_pvt_t pvt = {0};
-    float latitude, longitude;
+    float latitude, longitude, altitude;
+    uint32_t year, month, day, hour, minute, second;
 
     errorr_t e = ublox_get(gps, &pvt);
 
     latitude = pvt.lat / 1e7;
 	  longitude = pvt.lng / 1e7;
     altitude = pvt.hMSL / 1e3;
+    year = pvt.year;
+    month = pvt.month;
+    day = pvt.day;
+    hour = pvt.hour;
+    minute = pvt.minute;
+    second = pvt.second;
 
   
     //MQTT data transmission
     Adafruit_MQTT_Publish(&mqtt, "sharp_probe/latitude").publish(latitude);
     Adafruit_MQTT_Publish(&mqtt, "sharp_probe/longitude").publish(longitude);
     Adafruit_MQTT_Publish(&mqtt, "sharp_probe/altitude").publish(altitude);
-    Adafruit_MQTT_Publish(&mqtt, "sharp_probe/ano").publish(pvt.year);
-    Adafruit_MQTT_Publish(&mqtt, "sharp_probe/mes").publish(pvt.month);
-    Adafruit_MQTT_Publish(&mqtt, "sharp_probe/dia").publish(pvt.day);
-    Adafruit_MQTT_Publish(&mqtt, "sharp_probe/hora").publish(pvt.hour);
-    Adafruit_MQTT_Publish(&mqtt, "sharp_probe/minuto").publish(pvt.minute);
-    Adafruit_MQTT_Publish(&mqtt, "sharp_probe/segundo").publish(pvt.second);
+    Adafruit_MQTT_Publish(&mqtt, "sharp_probe/ano").publish(year);
+    Adafruit_MQTT_Publish(&mqtt, "sharp_probe/mes").publish(month);
+    Adafruit_MQTT_Publish(&mqtt, "sharp_probe/dia").publish(day);
+    Adafruit_MQTT_Publish(&mqtt, "sharp_probe/hora").publish(hour);
+    Adafruit_MQTT_Publish(&mqtt, "sharp_probe/minuto").publish(minute);
+    Adafruit_MQTT_Publish(&mqtt, "sharp_probe/segundo").publish(second);
     
 
     #ifdef ISPRETTYDEBUG
@@ -106,7 +113,7 @@ void parse_GPS (*pvParameters) {
   }
 }
 
-void parse_BME (*pvParameters) {
+void parse_BME (void *pvParameters) {
   for( ; ; ) {
     float pressure, temperature, altitude, humidity;
 
@@ -133,7 +140,7 @@ void parse_BME (*pvParameters) {
   }
 }
 
-void parse_MPU (*pvParameters) {
+void parse_MPU (void *pvParameters) {
   for( ; ; ) {
     sensors_event_t a, g, temp;
     mpu.getEvent(&a, &g, &temp);
@@ -161,7 +168,7 @@ void parse_MPU (*pvParameters) {
   }
 }
 
-void parse_DHT (*pvParameters) {
+void parse_DHT (void *pvParameters) {
   for( ; ; ) {
     float humidity, temperature, heatindex;
 
@@ -262,7 +269,7 @@ void setup_BME() {
   bme.setSampling(Adafruit_BME280::MODE_NORMAL,       /* Operating Mode */
                   Adafruit_BME280::SAMPLING_X16,      /* Temperature Oversampling */
                   Adafruit_BME280::SAMPLING_X16,      /* Pressure Oversampling */
-                  Adafruit_BME280::FILTER_X16,        /* Humidity Oversampling */
+                  Adafruit_BME280::SAMPLING_X16,      /* Humidity Oversampling */
                   Adafruit_BME280::FILTER_OFF,        /* Filtering */      
                   Adafruit_BME280::STANDBY_MS_0_5);   /* Standby Time */
 }

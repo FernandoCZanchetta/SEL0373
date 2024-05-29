@@ -15,6 +15,8 @@ TaskHandle_t ParseDHTTaskHandle;
 #include "Wifi.h"
 #include "Adafruit_MQTT.h"
 #include "Adafruit_MQTT_Client.h"
+#include "NEO8M/ublox_neo8.h"
+#include "NEO8M/ublox_neo8.c"
 
 enum class PARSE_ERROR_CODES {
   PARSE_SUCCESS,
@@ -31,6 +33,13 @@ using parse_error_t = PARSE_ERROR_CODES;
 #define BUZZER_FREQUENCY 6000
 #define BUZZER_FREQUENCY_RESOLUTION 13 //bits
 #define BUZZER_DURATION 750
+
+//Pinos referentes ao GPS:
+#define GPS_TX 1
+#define GPS_RX 2
+#define GPS_UART_BAUD_RATE 9600
+uart_connection_t uartzao = { .uart = &Serial1 };
+ublox_gps_t gps = { .conn = uartzao };
 
 //Pinos referentes ao MPU:
 #define MPU_SDA 20
@@ -65,29 +74,34 @@ Adafruit_MQTT_Client mqtt(&client, MQTT_SERVER, MQTT_SERVERPORT, MQTT_USERNAME, 
 
 void parse_GPS (*pvParameters) {
   for( ; ; ) {
-    float latitude, longitude, altitude;
-    float hours, minutes, seconds;
+    ublox_pvt_t pvt = {0};
+    float latitude, longitude;
 
-  
-    GPS.pegar_dados();
+    errorr_t e = ublox_get(gps, &pvt);
+
+    latitude = pvt.lat / 1e7;
+	  longitude = pvt.lng / 1e7;
+    altitude = pvt.hMSL / 1e3;
 
   
     //MQTT data transmission
     Adafruit_MQTT_Publish(&mqtt, "sharp_probe/latitude").publish(latitude);
     Adafruit_MQTT_Publish(&mqtt, "sharp_probe/longitude").publish(longitude);
     Adafruit_MQTT_Publish(&mqtt, "sharp_probe/altitude").publish(altitude);
-    Adafruit_MQTT_Publish(&mqtt, "sharp_probe/horas").publish(hours);
-    Adafruit_MQTT_Publish(&mqtt, "sharp_probe/minutos").publish(minutes);
-    Adafruit_MQTT_Publish(&mqtt, "sharp_probe/segundos").publish(seconds);
+    Adafruit_MQTT_Publish(&mqtt, "sharp_probe/ano").publish(pvt.year);
+    Adafruit_MQTT_Publish(&mqtt, "sharp_probe/mes").publish(pvt.month);
+    Adafruit_MQTT_Publish(&mqtt, "sharp_probe/dia").publish(pvt.day);
+    Adafruit_MQTT_Publish(&mqtt, "sharp_probe/hora").publish(pvt.hour);
+    Adafruit_MQTT_Publish(&mqtt, "sharp_probe/minuto").publish(pvt.minute);
+    Adafruit_MQTT_Publish(&mqtt, "sharp_probe/segundo").publish(pvt.second);
     
 
     #ifdef ISPRETTYDEBUG
-    Serial.println("Latitude: " + (String )latitude + "\n");
-    Serial.println("Longitude: " + (String )latitude + "\n");
-    Serial.println("Altitude: " + (String )latitude + "\n");
-    Serial.println("Horas: " + (String )latitude + "\n");
-    Serial.println("Minutos: " + (String )latitude + "\n");
-    Serial.println("Segundos: " + (String )latitude + "\n");
+    Serial.println("Latitude: " + (String) latitude + " °\n");
+    Serial.println("Longitude: " + (String) longitude + " °\n");
+    Serial.println("Altitude: " + (String) altitude + " m\n");
+    Serial.println("Data: " + (String) pvt.day + "/" + (String) pvt.month + "/" + (String) pvt.year + "\n");
+    Serial.println("Horário: " + (String) pvt.hour + ":" + (String) pvt.minute + ":" + (String) pvt.second + "\n");
     #endif
   }
 }
@@ -235,7 +249,8 @@ void loop() {
 }
 
 void setup_GPS() {
-
+  Serial1.begin(GPS_UART_BAUD_RATE, GPS_TX, GPS_RX);
+  ublox_init(gps);
 }
   
 void setup_BME() {

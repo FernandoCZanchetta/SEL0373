@@ -17,6 +17,7 @@ TaskHandle_t ParseDHTTaskHandle;
 #include "Adafruit_MQTT_Client.h"
 #include "NEO8M/ublox_neo8.h"
 #include "NEO8M/ublox_neo8.c"
+#include "pitches.h"
 
 enum class PARSE_ERROR_CODES {
   PARSE_SUCCESS,
@@ -26,13 +27,8 @@ enum class PARSE_ERROR_CODES {
 using parse_error_t = PARSE_ERROR_CODES;
 
 //Pinos referentes ao Buzzer:
-#define GPIO_BUZZER 24
-#define BUZZER_PWM_CHANNEL 0 //Avoid use of channels 2, 3, 10, 11, as they make use of timer 1, which is being used for other purposes.
-//More info in: https://github.com/espressif/arduino-esp32/blob/master/cores/esp32/esp32-hal-ledc.c
-#define NO_TONE_FREQUENCY 0
-#define BUZZER_FREQUENCY 6000
-#define BUZZER_FREQUENCY_RESOLUTION 13 //bits
-#define BUZZER_DURATION 750
+#define GPIO_BUZZER 14
+#define SETUP_MUSIC_BPM 115
 
 //Pinos referentes ao GPS:
 #define GPS_TX 1
@@ -219,11 +215,6 @@ void setup() {
   pinMode(GPIO_BUZZER, OUTPUT);
   Serial.println("Modo dos pinos definidos!\n");
 
-  //The function above will be used to vinculate the buzzer pin with one of the PWM channel, in order to generate the waveform needed
-  ledcSetup(GPIO_BUZZER, BUZZER_FREQUENCY, BUZZER_FREQUENCY_RESOLUTION);
-  ledcAttachPin(GPIO_BUZZER, BUZZER_PWM_CHANNEL);
-  Serial.println("Canal PWM do buzzer configurado!\n");
-
   UBaseType_t uxHighWaterMarkParseGPS = 100 * configMINIMAL_STACK_SIZE;
 
   if ((xTaskCreate(parse_GPS, "Parse GPS", uxHighWaterMarkParseGPS, NULL, 2, &ParseGPSTaskHandle)) == pdPASS) {
@@ -318,10 +309,103 @@ void MQTT_connect() {
 }
 
 void buzz() {
-  ledcWriteTone(BUZZER_PWM_CHANNEL, BUZZER_FREQUENCY);
-  delay(BUZZER_DURATION);
-  ledcWriteTone(BUZZER_PWM_CHANNEL, NO_TONE_FREQUENCY);
+  int divider = 0, noteDuration = 0, notes, wholenote;
   
+  int melody[] = {
+
+  // Never Gonna Give You Up - Rick Astley
+  // Score available at https://musescore.com/chlorondria_5/never-gonna-give-you-up_alto-sax
+  // Arranged by Chlorondria
+
+  NOTE_D5, -4, NOTE_E5, -4, NOTE_A4,  4, //1
+  NOTE_E5, -4, NOTE_FS5,-4, NOTE_A5, 16, NOTE_G5, 16, NOTE_FS5, 8,
+  NOTE_D5, -4, NOTE_E5, -4, NOTE_A4,  2,
+  NOTE_A4, 16, NOTE_A4, 16, NOTE_B4, 16, NOTE_D5,  8, NOTE_D5, 16,
+  NOTE_D5, -4, NOTE_E5, -4, NOTE_A4,  4, //repeat from 1
+  NOTE_E5, -4, NOTE_FS5,-4, NOTE_A5, 16, NOTE_G5, 16, NOTE_FS5, 8,
+  NOTE_D5, -4, NOTE_E5, -4, NOTE_A4,  2,
+  NOTE_A4, 16, NOTE_A4, 16, NOTE_B4, 16, NOTE_D5,  8, NOTE_D5, 16,
+  REST,     4, NOTE_B4,  8, NOTE_CS5, 8, NOTE_D5,  8, NOTE_D5,  8, NOTE_E5, 8, NOTE_CS5, -8,
+  NOTE_B4, 16, NOTE_A4,  2, REST,     4, 
+
+  REST,    8, NOTE_B4,  8, NOTE_B4,  8, NOTE_CS5, 8, NOTE_D5, 8, NOTE_B4, 4, NOTE_A4, 8, //7
+  NOTE_A5, 8, REST,     8, NOTE_A5,  8, NOTE_E5, -4, REST,    4, 
+  NOTE_B4, 8, NOTE_B4,  8, NOTE_CS5, 8, NOTE_D5,  8, NOTE_B4, 8, NOTE_D5, 8, NOTE_E5, 8, REST, 8,
+  REST,    8, NOTE_CS5, 8, NOTE_B4,  8, NOTE_A4, -4, REST,    4,
+  REST,    8, NOTE_B4,  8, NOTE_B4,  8, NOTE_CS5, 8, NOTE_D5, 8, NOTE_B4, 8, NOTE_A4, 4,
+  NOTE_E5, 8, NOTE_E5,  8, NOTE_E5,  8, NOTE_FS5, 8, NOTE_E5, 4, REST,    4,
+   
+  NOTE_D5,   2, NOTE_E5,   8, NOTE_FS5, 8, NOTE_D5,  8, //13
+  NOTE_E5,   8, NOTE_E5,   8, NOTE_E5,  8, NOTE_FS5, 8, NOTE_E5,  4, NOTE_A4, 4,
+  REST,      2, NOTE_B4,   8, NOTE_CS5, 8, NOTE_D5,  8, NOTE_B4,  8,
+  REST,      8, NOTE_E5,   8, NOTE_FS5, 8, NOTE_E5, -4, NOTE_A4, 16, NOTE_B4, 16, NOTE_D5, 16, NOTE_B4, 16,
+  NOTE_FS5, -8, NOTE_FS5, -8, NOTE_E5, -4, NOTE_A4, 16, NOTE_B4, 16, NOTE_D5, 16, NOTE_B4, 16,
+
+  NOTE_E5,  -8, NOTE_E5,  -8, NOTE_D5,  -8, NOTE_CS5, 16, NOTE_B4, -8, NOTE_A4, 16, NOTE_B4, 16, NOTE_D5, 16, NOTE_B4, 16, //18
+  NOTE_D5,   4, NOTE_E5,   8, NOTE_CS5, -8, NOTE_B4,  16, NOTE_A4,  8, NOTE_A4,  8, NOTE_A4,  8, 
+  NOTE_E5,   4, NOTE_D5,   2, NOTE_A4,  16, NOTE_B4,  16, NOTE_D5, 16, NOTE_B4, 16,
+  NOTE_FS5, -8, NOTE_FS5, -8, NOTE_E5,  -4, NOTE_A4,  16, NOTE_B4, 16, NOTE_D5, 16, NOTE_B4, 16,
+  NOTE_A5,   4, NOTE_CS5,  8, NOTE_D5,  -8, NOTE_CS5, 16, NOTE_B4,  8, NOTE_A4, 16, NOTE_B4, 16, NOTE_D5, 16, NOTE_B4, 16,
+
+  NOTE_D5, 4, NOTE_E5,  8, NOTE_CS5, -8, NOTE_B4, 16, NOTE_A4,  4, NOTE_A4, 8,  //23
+  NOTE_E5, 4, NOTE_D5,  2, REST,      4,
+  REST,    8, NOTE_B4,  8, NOTE_D5,   8, NOTE_B4,  8, NOTE_D5,  8, NOTE_E5, 4, REST, 8,
+  REST,    8, NOTE_CS5, 8, NOTE_B4,   8, NOTE_A4, -4, REST,     4,
+  REST,    8, NOTE_B4,  8, NOTE_B4,   8, NOTE_CS5, 8, NOTE_D5,  8, NOTE_B4, 8, NOTE_A4, 4,
+  REST,    8, NOTE_A5,  8, NOTE_A5,   8, NOTE_E5,  8, NOTE_FS5, 8, NOTE_E5, 8, NOTE_D5, 8,
+  
+  REST,    8, NOTE_A4,  8, NOTE_B4,  8, NOTE_CS5, 8, NOTE_D5,  8, NOTE_B4, 8, //29
+  REST,    8, NOTE_CS5, 8, NOTE_B4,  8, NOTE_A4, -4, REST,     4,
+  NOTE_B4, 8, NOTE_B4,  8, NOTE_CS5, 8, NOTE_D5,  8, NOTE_B4,  8, NOTE_A4, 4, REST, 8,
+  REST,    8, NOTE_E5,  8, NOTE_E5,  8, NOTE_FS5, 4, NOTE_E5, -4, 
+  NOTE_D5, 2, NOTE_D5,  8, NOTE_E5,  8, NOTE_FS5, 8, NOTE_E5,  4, 
+  NOTE_E5, 8, NOTE_E5,  8, NOTE_FS5, 8, NOTE_E5,  8, NOTE_A4,  8, NOTE_A4, 4,
+
+  REST,     -4, NOTE_A4,   8, NOTE_B4,   8, NOTE_CS5,  8, NOTE_D5,  8, NOTE_B4,  8, //35
+  REST,      8, NOTE_E5,   8, NOTE_FS5,  8, NOTE_E5,  -4, NOTE_A4, 16, NOTE_B4, 16, NOTE_D5, 16, NOTE_B4, 16,
+  NOTE_FS5, -8, NOTE_FS5, -8, NOTE_E5,  -4, NOTE_A4,  16, NOTE_B4, 16, NOTE_D5, 16, NOTE_B4, 16,
+  NOTE_E5,  -8, NOTE_E5,  -8, NOTE_D5,  -8, NOTE_CS5, 16, NOTE_B4,  8, NOTE_A4, 16, NOTE_B4, 16, NOTE_D5, 16, NOTE_B4, 16,
+  NOTE_D5,   4, NOTE_E5,   8, NOTE_CS5, -8, NOTE_B4,  16, NOTE_A4,  4, NOTE_A4,  8, 
+
+  NOTE_E5,   4, NOTE_D5,   2, NOTE_A4,  16, NOTE_B4,  16, NOTE_D5, 16, NOTE_B4, 16, //40
+  NOTE_FS5, -8, NOTE_FS5, -8, NOTE_E5,  -4, NOTE_A4,  16, NOTE_B4, 16, NOTE_D5, 16, NOTE_B4, 16,
+  NOTE_A5,   4, NOTE_CS5,  8, NOTE_D5,  -8, NOTE_CS5, 16, NOTE_B4,  8, NOTE_A4, 16, NOTE_B4, 16, NOTE_D5, 16, NOTE_B4, 16,
+  NOTE_D5,   4, NOTE_E5,   8, NOTE_CS5, -8, NOTE_B4,  16, NOTE_A4,  4, NOTE_A4,  8,  
+  NOTE_E5,   4, NOTE_D5,   2, NOTE_A4,  16, NOTE_B4,  16, NOTE_D5, 16, NOTE_B4, 16,
+   
+  NOTE_FS5, -8, NOTE_FS5, -8, NOTE_E5,  -4, NOTE_A4,  16, NOTE_B4, 16, NOTE_D5, 16, NOTE_B4, 16, //45
+  NOTE_A5,   4, NOTE_CS5,  8, NOTE_D5,  -8, NOTE_CS5, 16, NOTE_B4,  8, NOTE_A4, 16, NOTE_B4, 16, NOTE_D5, 16, NOTE_B4, 16,
+  NOTE_D5,   4, NOTE_E5,   8, NOTE_CS5, -8, NOTE_B4,  16, NOTE_A4,  4, NOTE_A4,  8,  
+  NOTE_E5,   4, NOTE_D5,   2, NOTE_A4,  16, NOTE_B4,  16, NOTE_D5, 16, NOTE_B4, 16,
+  NOTE_FS5, -8, NOTE_FS5, -8, NOTE_E5,  -4, NOTE_A4,  16, NOTE_B4, 16, NOTE_D5, 16, NOTE_B4, 16, //45
+  
+  NOTE_A5, 4, NOTE_CS5, 8, NOTE_D5,  -8, NOTE_CS5, 16, NOTE_B4, 8, NOTE_A4, 16, NOTE_B4, 16, NOTE_D5, 16, NOTE_B4, 16,
+  NOTE_D5, 4, NOTE_E5,  8, NOTE_CS5, -8, NOTE_B4,  16, NOTE_A4, 4, NOTE_A4,  8, 
+
+  NOTE_E5,4, NOTE_D5,2, REST,4
+};
+  
+  notes = sizeof(melody) / sizeof(melody[0]) / 2;
+
+  wholenote = (60000 * 4) / SETUP_MUSIC_BPM;
+
+  for (int thisNote = 0; thisNote < notes * 2; thisNote += 2) {
+
+    divider = melody[thisNote + 1];
+
+    if (divider > 0) {
+      noteDuration = (wholenote) / divider;
+    } else if (divider < 0) {
+      noteDuration = (wholenote) / abs(divider);
+      noteDuration *= 1.5;
+    }
+    tone(GPIO_BUZZER, melody[thisNote], noteDuration * 0.9);
+
+    delay(noteDuration);
+    
+    noTone(GPIO_BUZZER);
+  }
+
   #ifdef ISDEBUG
   Serial.println("BIP!\n");
   #endif

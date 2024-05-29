@@ -163,65 +163,6 @@ EXPORT void gpio_toggle(gpio_pin_t pin) {
 }
 #endif
 
-/**
- * Essa macro só é definida se o SPI for ser utilizado
- *
- *
- *
- *
- *
- *
- *
- */
-#ifdef _SPI_H_INCLUDED
-
-/**
- *
- * Define o tipo da interface spi
- * Utilizado para compatibilidade com outras platform
- *
- */
-typedef int spi_t;
-static spi_t fake_spi = 1;
-
-typedef struct {
-  spi_t *spi;
-  gpio_pin_t pin;
-} spi_device_t;
-//#include <SPI.h>
-
-/**
- * Inicializa a biblioteca SPI
- * Configura os pinos de SCK, MOSI e SS como outputs
- * Pulling SCK e MOSI como low e SS como high
- *
- */
-// SPI.begin();
-
-EXPORT error_t spi_transceive(spi_device_t device, buffer_view_t rx_buffer,
-                              buffer_view_t tx_buffer) {
-
-  if (tx_buffer.size != rx_buffer.size) {
-    return 1;
-  }
-  rx_buffer.data = SPI.transfer(tx_buffer.data); // receive rx and transmit tx
-  error_t error = rx_buffer;
-  return error;
-}
-
-EXPORT error_t spi_receive(spi_device_t device, buffer_view_t buffer_view) {
-  buffer_view.data = SPI.transfer(0x00); // envia um 0 para receber os dados
-  error_t error = buffer_view;
-  return error;
-}
-
-EXPORT error_t spi_transmit(spi_device_t device, buffer_view_t buffer_view) {
-  error_t error = SPI.transfer(buffer_view.data);
-  return error;
-}
-
-#endif
-
 /***
  * MODULO UART
  *

@@ -27,20 +27,20 @@ export class SidebarComponent implements OnInit, OnDestroy {
       collapsed: true,
       subitems: [
         {
-          title: 'Informações Gerais',
-          id: 'introducao',
-        },
+          title: 'Home',
+          id: 'Home',
+        }
+      ],
+    },
+    {
+      title: 'Dev',
+      icon: 'fas fa-calendar-week',
+      route: 'test-page',
+      collapsed: true,
+      subitems: [
         {
-          title: 'Navegação',
-          id: 'navegacao',
-        },
-        {
-          title: 'FAQ',
-          id: 'faq',
-        },
-        {
-          title: 'Patrocinadores',
-          id: 'patrocinadores',
+          title: 'Img Grid',
+          id: 'img-grid',
         },
       ],
     },

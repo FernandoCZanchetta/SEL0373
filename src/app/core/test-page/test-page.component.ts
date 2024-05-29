@@ -3,11 +3,11 @@ import { AlternatingLayoutModel,ImageGridItemModel } from '@models'
 import { SidebarService } from '@services'
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss'],
+  selector: 'app-test-page',
+  templateUrl: './test-page.component.html',
+  styleUrls: ['./test-page.component.scss'],
 })
-export class HomeComponent {
+export class TestPageComponent {
   textAndImageList: AlternatingLayoutModel[] = [
     {
       title: 'Entrada da USP',

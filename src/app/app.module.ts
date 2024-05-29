@@ -6,6 +6,7 @@ import {
   FooterComponent,
   GroupsPanelComponent,
   HomeComponent,
+  TestPageComponent,
   NavbarComponent,
   PageTitleComponent,
   SidebarComponent,
@@ -46,6 +47,7 @@ import { AppComponent } from './app.component'
     SanitizeHtmlPipe,
     SidebarComponent,
     SocialMediaIconComponent,
+    TestPageComponent,
     TitleComponent,
   ],
   imports: [

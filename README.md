@@ -8,19 +8,19 @@
     <a href="https://sel.eesc.usp.br/">
     <img src="https://img.shields.io/badge/Linked%20to-SEL--EESC--USP-black?style=for-the-badge"/>
     </a>
-    <a href="https://github.com/${{ env.REPOSITORY_FULL_NAME }}/blob/main/LICENSE">
+    <a href="https://github.com/${{ env.REPOSITORY_FULL_NAME }}/blob/dev/LICENSE">
     <img src="https://img.shields.io/github/license/${{ env.REPOSITORY_FULL_NAME }}?style=for-the-badge"/>
     </a>
     <a href="https://github.com/${{ env.REPOSITORY_FULL_NAME }}/issues">
     <img src="https://img.shields.io/github/issues/${{ env.REPOSITORY_FULL_NAME }}?style=for-the-badge"/>
     </a>
-    <a href="https://github.com/${{ env.REPOSITORY_FULL_NAME }}/commits/main">
+    <a href="https://github.com/${{ env.REPOSITORY_FULL_NAME }}/commits/dev">
     <img src="https://img.shields.io/github/commit-activity/m/${{ env.REPOSITORY_FULL_NAME }}?style=for-the-badge">
     </a>
     <a href="https://github.com/${{ env.REPOSITORY_FULL_NAME }}/graphs/contributors">
     <img src="https://img.shields.io/github/contributors/${{ env.REPOSITORY_FULL_NAME }}?style=for-the-badge"/>
     </a>
-    <a href="https://github.com/${{ env.REPOSITORY_FULL_NAME }}/commits/main">
+    <a href="https://github.com/${{ env.REPOSITORY_FULL_NAME }}/commits/dev">
     <img src="https://img.shields.io/github/last-commit/${{ env.REPOSITORY_FULL_NAME }}?style=for-the-badge"/>
     </a>
     <a href="https://github.com/${{ env.REPOSITORY_FULL_NAME }}/issues">

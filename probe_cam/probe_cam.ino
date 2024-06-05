@@ -2,8 +2,7 @@
 //#define ISDEBUG 1
 //#define ISPRETTYDEBUG 1
 
-#include "Wire.h"
-#include "Wifi.h"
+#include "WiFi.h"
 #include "Adafruit_MQTT.h"
 #include "Adafruit_MQTT_Client.h"
 #include "esp_camera.h"
@@ -75,7 +74,7 @@ Adafruit_MQTT_Client mqtt(&client, MQTT_SERVER, MQTT_SERVERPORT, MQTT_USERNAME, 
 Adafruit_MQTT_Subscribe takephoto = Adafruit_MQTT_Subscribe(&mqtt, "sharp_probe/photo_request");
 
 
-void parse_Camera () {
+void parse_Camera (uint32_t a) {
   camera_fb_t * fb = esp_camera_fb_get();
 
   mqtt.publish("sharp_probe/send_photo", fb->buf, fb->len);
@@ -87,9 +86,6 @@ void parse_Camera () {
 void setup() {
   Serial.begin(115200);
   Serial.println("Comunicação SERIAL estabelecida!\n");
-  
-  Wire.begin(MPU_SDA, MPU_SCL);
-  Wire1.begin(BMP_SDA, MPU_SCL); 
 
   WiFi.begin(WLAN_SSID, WLAN_PASS);
   
@@ -98,13 +94,13 @@ void setup() {
     delay(500);
   }
 
-  MQTT_connect();
-
-  setup_Camera(); 
-
   takephoto.setCallback(parse_Camera);
 
   mqtt.subscribe(&takephoto);
+
+  MQTT_connect();
+
+  setup_Camera();
 
   Serial.println("Setup da sonda concluído!");
 }
@@ -117,7 +113,6 @@ void setup_Camera() {
   esp_err_t err = esp_camera_init(&camera_config);
   if (err != ESP_OK) {
     ESP_LOGE(TAG, "Camera Init Failed");
-    return err;
   }
 }
 

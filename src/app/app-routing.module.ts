@@ -22,10 +22,10 @@ const routes: RouteModel[] = [
       path: 'test-page',
       component: TestPageComponent,
       data: {
-        title: 'SHARP_PROBE',
+        title: 'TEST_PAGE',
         background: [
           {
-            src: '/assets/images/home/quadrado.jpg',
+            src: '/assets/images/home/macaco.gif',
             alt: 'SPaCE',
           },
         ],

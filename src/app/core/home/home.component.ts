@@ -8,38 +8,37 @@ import { SidebarService } from '@services'
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent {
-  textAndImageList: AlternatingLayoutModel[] = [
+
+   graphs: ImageGridItemModel[] = [
     {
-      title: 'Entrada da USP',
-      subtitle: true,
       image: {
-        alt: 'mapa do campus I',
-        src: '/assets/images/home/montanha.jpg',
-        caption: 'Ola só esses relevos',
+        src: '/assets/images/home/pato.gif',
+        alt: 'Altura',
+        caption: 'Altura',
       },
-    },
-  ]
-  exemplosPhotos: ImageGridItemModel[] = [
-    {
-      image: {
-        src: '/assets/images/home/quadrado.jpg',
-        alt: 'quadrado',
-        caption: 'quadrado',
-      },
-    },
-    {
-      image: {
-        src: '/assets/images/home/pilares.jpg',
-        alt: 'pilares',
-        caption: 'pilares',
+      modal: {
+        image: {
+          src: '/assets/images/home/legal.png',
+          alt: 'Altura',
+        },
+        text: '1203012321390129321930',
+        title: 'Altitude da sonda',
       },
     },
     {
       image: {
-        src: '/assets/images/logo/main.png',
-        alt: 'querer',
-        caption: 'querer',
+        src: '/assets/images/home/girando.gif',
+        alt: 'Temperatura',
+        caption: 'Temperatura',
       },
-    },      
+      modal: {
+        image: {
+          src: '/assets/images/home/legal.png',
+          alt: 'Temperatura',
+        },
+        text: '1203012321390129321930',
+        title: 'Temperatura',
+      },
+    },
   ]
 }

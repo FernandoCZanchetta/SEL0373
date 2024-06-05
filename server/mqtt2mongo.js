@@ -1,5 +1,6 @@
+const dotenv = require('dotenv').config()
 const { MongoClient } = require('mongodb');
-const mongodbURI = 'mongodb://username:password@server.mongohq.com:port/database';
+const mongodbURI = `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_CLUSTER}.qieglpc.mongodb.net/?retryWrites=true&w=majority&appName=${process.env.MONGO_APPNAME}`;
 const mongodbClient = new MongoClient(mongodbURI);
 const dbName = 'SharpProbe';
 const collectionName = '';
@@ -34,8 +35,7 @@ main()
     .catch(console.error)
     .finally(async () => await mongodbClient.close());
 
-/*var dotenv = require('dotenv').config();
-var mqtt = require('mqtt');
+/*var mqtt = require('mqtt');
 var deviceRoot = "demo/device/";
 var collection, client;
 

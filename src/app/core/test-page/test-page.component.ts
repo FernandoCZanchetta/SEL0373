@@ -1,6 +1,13 @@
 import { Component } from '@angular/core'
 import { AlternatingLayoutModel, ImageGridItemModel, ImageModel } from '@models'
 import { SidebarService } from '@services'
+import {
+  IMqttServiceOptions,
+  MqttService,
+  IPublishOptions,
+} from 'ngx-mqtt'
+import { IClientSubscribeOptions } from 'mqtt-browser';
+import { environment } from '../../../environments/environment'
 
 @Component({
   selector: 'app-test-page',
@@ -62,4 +69,25 @@ export class TestPageComponent {
       },
     },
   ]
+
+  constructor(private _mqttService: MqttService) {
+    this.client = this._mqttService;
+  }
+  publish = {
+    topic: 'sharp_probe/request_photo',
+    qos: 0,
+    payload: '{ "msg": "QUero fotos do ARNAHA" }',
+  };
+  qosList = [
+    { label: 0, value: 0 },
+    { label: 1, value: 1 },
+    { label: 2, value: 2 },
+  ];
+  client: MqttService | undefined;
+
+  doPublish(): void {
+    const { topic, qos, payload } = this.publish
+    console.log(this.publish)
+    this.client?.unsafePublish(topic, payload, { qos } as IPublishOptions)
+  }
 }

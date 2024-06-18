@@ -4,7 +4,15 @@
 
 export const environment = {
   production: false,
+  MQTT_SERVICE_OPTIONS: {
+    hostname: 'igbt.eesc.usp.br',
+    port: 1883,
+    path: '/mqtt',
+    user: 'mqtt',
+    password: 'mqtt_123_abc',
+  }
 }
+
 
 /*
  * For easier debugging in development mode, you can import the following file

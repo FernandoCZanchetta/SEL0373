@@ -8,7 +8,28 @@
     O <i>Sharp_Probe</i> é um projeto de graduação da Escola de Engenharia de São Carlos da disciplina <strong>SEL0373</strong> 
   </p>
 
-  <button type="button" class="btn btn-primary" onclick="doPublish">DO PULSOVS</button>
+  <p>
+    Foto da Sonda
+      <button type="button" class="btn btn-primary" onclick="doPublish">Requisitar Foto</button>
+  </p>
 
-  <app-image-grid [gridItems]="graphs"></app-image-grid>
+  <div>
+    Altura
+    <app-image-grid [gridItems]="altura"></app-image-grid>
+  </div>
+
+  <div>
+    Temperatura
+    <app-image-grid [gridItems]="temperatura"></app-image-grid>
+  </div>
+
+  <div>
+    Latitude e Longitude
+  </div>
+
+  <div>
+    Umidade
+    <app-image-grid [gridItems]="umidade"></app-image-grid>
+  </div>
+  
 </section>

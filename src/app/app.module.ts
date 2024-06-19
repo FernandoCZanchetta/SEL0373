@@ -33,7 +33,7 @@ import { environment } from '../environments/environment'
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   hostname: environment.MQTT_SERVICE_OPTIONS.hostname,
   port: environment.MQTT_SERVICE_OPTIONS.port,
-  path: environment.MQTT_SERVICE_OPTIONS.path,
+  /**path: environment.MQTT_SERVICE_OPTIONS.path,**/
   username: environment.MQTT_SERVICE_OPTIONS.user,
   password: environment.MQTT_SERVICE_OPTIONS.password,
 }

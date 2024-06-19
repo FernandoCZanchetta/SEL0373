@@ -30,13 +30,17 @@
     "@angular/platform-browser-dynamic": "^18.0.3",
     "@angular/router": "^18.0.3",
     "@npmcli/package-json": "^5.2.0",
+    "@types/ws": "^8.5.4",
     "bootstrap": "^5.3.3",
     "chart.js": "^4.4.3",
     "glob": "^10.4.1",
+    "mongodb": "^6.7.0",
+    "ng-apexcharts": "^1.11.0",
     "ngx-bootstrap": "^12.0.0",
     "ngx-mqtt": "^17.0.0",
     "rxjs": "~7.4.0",
     "tslib": "^2.3.0",
+    "util": "^0.12.5",
     "zone.js": "^0.14.7"
   },
   "devDependencies": {

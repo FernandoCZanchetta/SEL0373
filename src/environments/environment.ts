@@ -7,11 +7,19 @@ export const environment = {
   MQTT_SERVICE_OPTIONS: {
     hostname: 'igbt.eesc.usp.br',
     port: 1883,
-    path: '/mqtt',
+    /**path: '/mqtt',**/
     user: 'mqtt',
     password: 'mqtt_123_abc',
+  },
+
+  mongo: {
+    username: 'claudinho do pé torto',
+    password: 'sim',
+    url: 'clustar',
   }
 }
+
+
 
 
 /*

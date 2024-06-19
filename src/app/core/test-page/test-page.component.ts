@@ -1,6 +1,7 @@
 import { Component } from '@angular/core'
-import { AlternatingLayoutModel, ImageGridItemModel, ImageModel } from '@models'
+import { AlternatingLayoutModel, ImageGridItemModel, ImageModel, ChartModel } from '@models'
 import { SidebarService } from '@services'
+ /* MQTT COMEÇO */
 import {
   IMqttServiceOptions,
   MqttService,
@@ -8,6 +9,8 @@ import {
 } from 'ngx-mqtt'
 import { IClientSubscribeOptions } from 'mqtt-browser';
 import { environment } from '../../../environments/environment'
+ /* MQTT FINAL */
+import { MongoClient } from 'mongodb';
 
 @Component({
   selector: 'app-test-page',
@@ -70,13 +73,15 @@ export class TestPageComponent {
     },
   ]
 
+
+ /* MQTT */
   constructor(private _mqttService: MqttService) {
     this.client = this._mqttService;
   }
   publish = {
     topic: 'sharp_probe/request_photo',
     qos: 0,
-    payload: '{ "msg": "QUero fotos do ARNAHA" }',
+    payload: '{ "msg": "Quero fotos do ARNAHA" }',
   };
   qosList = [
     { label: 0, value: 0 },
@@ -89,5 +94,30 @@ export class TestPageComponent {
     const { topic, qos, payload } = this.publish
     console.log(this.publish)
     this.client?.unsafePublish(topic, payload, { qos } as IPublishOptions)
+  
+ /* MQTT */
+  /* Mongo */
+/**
+  async function main() {
+      const uri = "mongodb+srv://enviroment.mongo.username:enviroment.mongo.password@enviroment.mongo.url";
+      
+      const Mclient = new MongoClient(uri);
+  
+      try {
+          // Connect to the MongoDB cluster
+          await Mclient.connect();
+  
+          // Make the appropriate DB calls
+  
+      } finally {
+          // Close the connection to the MongoDB cluster
+          await Mclient.close();
+      }
+  }
+  
+  main().catch(console.error);
+  };
+
+  **/
   }
 }

@@ -12,6 +12,8 @@ import { environment } from '../../../environments/environment'
  /* MQTT FINAL */
 import { MongoClient } from 'mongodb';
 
+import { Chart } from 'chart.js';
+
 @Component({
   selector: 'app-test-page',
   templateUrl: './test-page.component.html',
@@ -72,6 +74,7 @@ export class TestPageComponent {
       },
     },
   ]
+
 
 
  /* MQTT */

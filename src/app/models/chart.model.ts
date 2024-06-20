@@ -1,6 +1,6 @@
 export interface ChartModel {
-  name: string
+  label?: string
+  labels?: Float32Array
   data?: Float32Array
-  categories?: Float32Array
-  text: string
+  titleC?: string
 }

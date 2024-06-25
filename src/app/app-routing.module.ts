@@ -12,25 +12,12 @@ const routes: RouteModel[] = [
       title: 'SHARP_PROBE',
       background: [
         {
-          src: '/assets/images/home/noite.jpg',
+          src: '/assets/images/home/voyager.jpg',
           alt: 'Bonito',
         },
       ],
     },
   },
-    {
-      path: 'test-page',
-      component: TestPageComponent,
-      data: {
-        title: 'TEST_PAGE',
-        background: [
-          {
-            src: '/assets/images/home/macaco.gif',
-            alt: 'SPaCE',
-          },
-        ],
-      },
-    }
 ]
 
 @NgModule({

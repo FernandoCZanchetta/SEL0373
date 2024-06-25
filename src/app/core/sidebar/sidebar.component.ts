@@ -24,26 +24,14 @@ export class SidebarComponent implements OnInit, OnDestroy {
       title: 'Página Inicial',
       icon: 'fas fa-home',
       route: '',
-      collapsed: true,
+      collapsed: false,
       subitems: [
         {
           title: 'Home',
           id: 'Home',
         }
       ],
-    },
-    {
-      title: 'Dev',
-      icon: 'fas fa-calendar-week',
-      route: 'test-page',
-      collapsed: true,
-      subitems: [
-        {
-          title: 'Img Grid',
-          id: 'img-grid',
-        },
-      ],
-    },
+    }
   ]
 
   private expanded?: SidebarItemModel

@@ -28,12 +28,12 @@ import { ModalModule } from 'ngx-bootstrap/modal'
 import { TooltipModule } from 'ngx-bootstrap/tooltip'
 import { AppRoutingModule } from './app-routing.module'
 import { AppComponent } from './app.component'
-import { MqttModule, IMqttServiceOptions } from "ngx-mqtt";
+import { MqttModule, IMqttServiceOptions } from 'ngx-mqtt'
 import { environment } from '../environments/environment'
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   hostname: environment.MQTT_SERVICE_OPTIONS.hostname,
   port: environment.MQTT_SERVICE_OPTIONS.port,
-  /**path: environment.MQTT_SERVICE_OPTIONS.path,**/
+  /** path: environment.MQTT_SERVICE_OPTIONS.path,**/
   username: environment.MQTT_SERVICE_OPTIONS.user,
   password: environment.MQTT_SERVICE_OPTIONS.password,
 }
@@ -67,7 +67,7 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     CollapseModule.forRoot(),
     ModalModule.forRoot(),
     TooltipModule.forRoot(),
-    MqttModule.forRoot(MQTT_SERVICE_OPTIONS)
+    MqttModule.forRoot(MQTT_SERVICE_OPTIONS),
   ],
   providers: [],
   bootstrap: [AppComponent],

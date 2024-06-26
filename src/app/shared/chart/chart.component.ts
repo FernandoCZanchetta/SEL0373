@@ -1,43 +1,38 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Chart } from 'chart.js';
+import { Component, Input, OnInit } from '@angular/core'
+import { Chart } from 'chart.js'
 
 @Component({
   selector: 'app-chart',
   templateUrl: './chart.component.html',
 })
-
-
-
 export class ChartComponent implements OnInit {
   @Input() label?: string
   @Input() labels?: Float32Array
   @Input() data?: Float32Array
 
-  public chart: any;
+  public chart: any
 
   ngOnInit(): void {
-    this.createChart();
+    this.createChart()
   }
 
-  createChart(){
-    
-    this.chart = new Chart("MyChart", {
+  createChart() {
+    this.chart = new Chart('MyChart', {
       type: 'line',
 
       data: {
-        labels: [], 
-	       datasets: [
+        labels: [],
+        datasets: [
           {
             label: '',
             data: [],
-            backgroundColor: 'blue'
+            backgroundColor: 'blue',
           },
-       ]
+        ],
       },
       options: {
-        aspectRatio:2.5
-      }
-    });
+        aspectRatio: 2.5,
+      },
+    })
   }
-
 }

@@ -5,32 +5,41 @@
 
   <app-title [subtitle]="true"></app-title>
   <p>
-    O <i>Sharp_Probe</i> é um projeto de graduação da Escola de Engenharia de São Carlos da disciplina <strong>SEL0373 - Projetos em Internet das Coisas</strong> 
-    Este projeto tem o obejtivo de demonstrar o funcionamento de uma sonda climática, apresentando dados como posição, altura e temperatura. 
+    O <i>Sharp_Probe</i> é um projeto de graduação da Escola de Engenharia de São Carlos
+    da disciplina <strong>SEL0373 - Projetos em Internet das Coisas</strong>
+    Este projeto tem o obejtivo de demonstrar o funcionamento de uma sonda climática,
+    apresentando dados como posição, altura e temperatura.
   </p>
 
   <p>
     Foto da Sonda
-      <button type="button" class="btn btn-primary" onclick="doPublish">Requisitar Foto</button>
+    <button type="button" class="btn btn-primary" onclick="doPublish">
+      Requisitar Foto
+    </button>
   </p>
 
   <div>
-    Altura
-    <app-image-grid [gridItems]="altura"></app-image-grid>
+    Localização
+    <app-image-grid [gridItems]="latlongalt"></app-image-grid>
   </div>
 
   <div>
-    Temperatura
-    <app-image-grid [gridItems]="temperatura"></app-image-grid>
+    Data e Hora
+    <app-image-grid [gridItems]="datatime"></app-image-grid>
   </div>
 
   <div>
-    <p>Latitude e Longitude</p>
+    Dados BME
+    <app-image-grid [gridItems]="bme"></app-image-grid>
   </div>
 
   <div>
-    Umidade
-    <app-image-grid [gridItems]="umidade"></app-image-grid>
+    Dados MPU
+    <app-image-grid [gridItems]="mpu"></app-image-grid>
   </div>
-  
+
+  <div>
+    Dados DHT
+    <app-image-grid [gridItems]="dht"></app-image-grid>
+  </div>
 </section>

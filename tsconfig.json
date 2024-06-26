@@ -16,27 +16,14 @@
     "importHelpers": true,
     "target": "ES2022",
     "module": "es2020",
-    "lib": [
-      "es2020",
-      "dom"
-    ],
+    "lib": ["es2020", "dom"],
     "baseUrl": "./src/app/",
     "paths": {
-      "@services": [
-        "services/index.ts"
-      ],
-      "@models": [
-        "models/index.ts"
-      ],
-      "@shared": [
-        "shared/index.ts"
-      ],
-      "@core": [
-        "core/index.ts"
-      ],
-      "@pipes": [
-        "pipes/index.ts"
-      ]
+      "@services": ["services/index.ts"],
+      "@models": ["models/index.ts"],
+      "@shared": ["shared/index.ts"],
+      "@core": ["core/index.ts"],
+      "@pipes": ["pipes/index.ts"]
     },
     "useDefineForClassFields": false
   },

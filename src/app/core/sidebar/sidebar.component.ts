@@ -29,9 +29,9 @@ export class SidebarComponent implements OnInit, OnDestroy {
         {
           title: 'Home',
           id: 'Home',
-        }
+        },
       ],
-    }
+    },
   ]
 
   private expanded?: SidebarItemModel

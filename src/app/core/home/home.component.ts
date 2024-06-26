@@ -1,14 +1,9 @@
 import { Component, OnInit } from '@angular/core'
-import { AlternatingLayoutModel,ImageGridItemModel, ProbeDataModel } from '@models'
-import {
-  IMqttMessage,
-  IMqttServiceOptions,
-  MqttService,
-  IPublishOptions,
- } from 'ngx-mqtt';
- import { IClientSubscribeOptions } from 'mqtt-browser';
- import { Subscription } from 'rxjs';
-import { environment } from '../../../environments/environment';
+import { AlternatingLayoutModel, ImageGridItemModel, ProbeDataModel } from '@models'
+import { IMqttMessage, IMqttServiceOptions, MqttService, IPublishOptions } from 'ngx-mqtt'
+import { IClientSubscribeOptions } from 'mqtt-browser'
+import { Subscription } from 'rxjs'
+import { environment } from '../../../environments/environment'
 // import { SidebarService, getDataService } from '@services'
 // import { ObjectId } from 'mongodb'
 // import { interval } from 'rxjs'
@@ -19,88 +14,90 @@ import { environment } from '../../../environments/environment';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent {
-  client: MqttService | undefined;
+  client: MqttService | undefined
 
   constructor(private _mqttService: MqttService) {
-    this.client = this._mqttService;
- }
+    this.client = this._mqttService
+  }
 
- connection = {
-  hostname: "igbt.eesc.usp.br",
-  port: 1883,
-  path: '/mqtt',
-  clean: true, // Retain session
-  connectTimeout: 4000, // Timeout period
-  reconnectPeriod: 4000, // Reconnect period
-  // Authentication information
-  clientId: 'mqttx_597046f4',
-  username: 'mqtt',
-  password: 'mqtt_123_abc',
-  protocol: 'ws',
- }
+  connection = {
+    hostname: 'igbt.eesc.usp.br',
+    port: 1883,
+    path: '/mqtt',
+    clean: true, // Retain session
+    connectTimeout: 4000, // Timeout period
+    reconnectPeriod: 4000, // Reconnect period
+    // Authentication information
+    clientId: 'mqttx_597046f4',
+    username: 'mqtt',
+    password: 'mqtt_123_abc',
+    protocol: 'ws',
+  }
 
   publish = {
     topic: 'sharp_probe/request_photo',
     qos: 0,
     payload: '{ "msg": "QUERO FOTO!" }',
-  };
+  }
 
   qosList = [
     { label: 0, value: 0 },
     { label: 1, value: 1 },
     { label: 2, value: 2 },
-  ];
+  ]
 
   createConnection() {
     try {
       this.client?.connect(this.connection as IMqttServiceOptions)
-   } catch (error) {
-      console.log('mqtt.connect error', error);
-   }
- }
-
- destroyConnection() {
-  try {
-    this.client?.disconnect(true)
-    console.log('Successfully disconnected!')
-  } catch (error: any) {
-    console.log('Disconnect failed', error.toString())
+    } catch (error) {
+      console.log('mqtt.connect error', error)
+    }
   }
- }
 
- doPublish() {
-  this.createConnection()
-  const { topic, qos, payload } = this.publish
-  console.log(this.publish)
-  this.client?.unsafePublish(topic, payload, { qos } as IPublishOptions)
-  this.destroyConnection();
- }
+  destroyConnection() {
+    try {
+      this.client?.disconnect(true)
+      console.log('Successfully disconnected!')
+    } catch (error: any) {
+      console.log('Disconnect failed', error.toString())
+    }
+  }
+
+  doPublish() {
+    this.createConnection()
+    const { topic, qos, payload } = this.publish
+    console.log(this.publish)
+    this.client?.unsafePublish(topic, payload, { qos } as IPublishOptions)
+    this.destroyConnection()
+  }
 
   // getData:getDataService = new getDataService()
-  data: ProbeDataModel[] = [{
-    latitude: -22.15141,
-    longitude: -44.1259815,
-    altitude: 857.129815,
-    year: 2024,
-    month: 6,
-    day: 26,
-    hour: 15,
-    minutes: 31,
-    seconds: 32,
-    pressure: 1016,
-    altitudeBME: 856.158724,
-    humidityBME: 38.1591248,
-    acelerationx: 3.149150,
-    acelerationy: 1.125981,
-    acelerationz: 6.15914,
-    anglex: 10.125914,
-    angley: 120.14914,
-    anglez: 246.124814,
-    temperaturempu: 26.410512,
-    humiditydht: 39.5190142,
-    temperaturedht: 26.14901247,
-    heatindex: 28.4151941,
-  }]
+  data: ProbeDataModel[] = [
+    {
+      latitude: -22.15141,
+      longitude: -44.1259815,
+      altitude: 857.129815,
+      year: 2024,
+      month: 6,
+      day: 26,
+      hour: 15,
+      minutes: 31,
+      seconds: 32,
+      pressure: 1016,
+      altitudeBME: 856.158724,
+      humidityBME: 38.1591248,
+      acelerationx: 3.14915,
+      acelerationy: 1.125981,
+      acelerationz: 6.15914,
+      anglex: 10.125914,
+      angley: 120.14914,
+      anglez: 246.124814,
+      temperaturempu: 26.410512,
+      humiditydht: 39.5190142,
+      temperaturedht: 26.14901247,
+      heatindex: 28.4151941,
+    },
+  ]
   // sub = interval(1000).subscribe(x => { this.getData.getProbeDatas(this.data) })
 
   latlongalt: ImageGridItemModel[] = [

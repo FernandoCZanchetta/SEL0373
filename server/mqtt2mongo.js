@@ -1,9 +1,10 @@
 const dotenv = require('dotenv').config();
-const { MongoClient } = require('mongodb');
+const { MongoClient, GridFSBucket } = require('mongodb');
 const mongodbURI = `mongodb+srv://${encodeURIComponent(process.env.MONGO_USERNAME)}:${encodeURIComponent(process.env.MONGO_PASSWORD)}@${process.env.MONGO_CLUSTER}.qieglpc.mongodb.net/?retryWrites=true&w=majority&appName=${process.env.MONGO_APPNAME}`;
 const mongodbClient = new MongoClient(mongodbURI);
 const mqtt = require('mqtt');
 const mqttClient = mqtt.connect(`mqtt://${process.env.MQTT_HOST}`, { username: process.env.MQTT_USERNAME , password: process.env.MQTT_PASSWORD });
+const { Readable } = require('stream');
 
 const mqttTopics = [
     "sharp_probe/latitude",
@@ -29,13 +30,14 @@ const mqttTopics = [
     "sharp_probe/umidade_dht",
     "sharp_probe/temperatura_dht",
     "sharp_probe/sensação_termica",
+    "sharp_probe/send_photo",
 ];
 
 var latitude = 0, longitude = 0, altitude = 0, year = 0, month = 0, day = 0, hour = 0, minute = 0, second = 0;
 var pressure = 0, temperature_BME = 0, altitude_BME = 0, humidity_BME = 0;
 var a_x = 0, a_y = 0, a_z = 0, g_x = 0, g_y = 0, g_z = 0, temperature_MPU = 0;
 var humidity_DHT = 0, temperature_DHT = 0, heatindex = 0;
-var pcktid = 0;
+var pcktid = 0, picid = 0;
 
 async function appendData (doc) {
     try {
@@ -45,6 +47,25 @@ async function appendData (doc) {
         const result = await collection.insertOne(doc);
 
         console.log(`A document was inserted with the _id: ${result.insertedId}`);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+async function appendPhoto (pic) {
+    try {
+        const db = mongodbClient.db(process.env.MONGO_DBNAME);
+        const bucket = new GridFSBucket(db, { bucketName: 'ProbePhotos'});
+
+        const picStream = Readable.from(pic);
+
+        const result = await picStream.pipe(bucket.openUploadStream('Picture' + picid.toString(), {
+            chunkSizeBytes: 1048576,
+            metadata: { field: 'myField', value: 'myValue' }
+        }));
+
+        console.log(`A photo was inserted with the _id: ${result.id}`);
+        picid++;
     } catch (error) {
         console.error(error);
     }
@@ -146,6 +167,10 @@ async function parseMQTT () {
                 heatindex = message;
                 return createDocument();
             }
+            case mqttTopics[23]: {
+                picture = message;
+                return appendPhoto(picture);
+            }
         };
     });
 }
@@ -207,4 +232,4 @@ async function main () {
 main()
     .then(console.log)
     .catch(console.error)
-    //.finally(await mongodbClient.close());
+    .finally(mongodbClient.close());

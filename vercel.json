@@ -1,0 +1,9 @@
+{
+  "git": {
+    "deploymentEnabled": {
+      "server": false,
+      "issue-1": false,
+      "firmware": false
+    }
+  }
+}

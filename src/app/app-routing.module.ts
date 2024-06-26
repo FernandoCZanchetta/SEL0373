@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core'
 import { RouterModule, Routes } from '@angular/router'
 import { HomeComponent } from '@core'
+import { TestPageComponent } from '@core'
 import { RouteModel } from '@models'
 
 const routes: RouteModel[] = [
@@ -11,24 +12,8 @@ const routes: RouteModel[] = [
       title: 'SHARP_PROBE',
       background: [
         {
-          src: '/assets/images/home/noite.jpg',
+          src: '/assets/images/home/voyager.jpg',
           alt: 'Bonito',
-        },
-        {
-          src: '/assets/images/home/wheatley.jpg',
-          alt: 'Wheatley',
-        },
-        {
-          src: '/assets/images/home/montanha.jpg',
-          alt: 'Montanha',
-        },
-        {
-          src: '/assets/images/home/quadrado.jpg',
-          alt: 'Quadrados',
-        },
-        {
-          src: '/assets/images/home/pilares.jpg',
-          alt: 'pilares da criação',
         },
       ],
     },

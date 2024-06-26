@@ -1,21 +1,36 @@
 <app-page-title></app-page-title>
 
 <section class="text-justify m-auto">
-  <a id="introducao"></a>
+  <a id="home"></a>
 
   <app-title [subtitle]="true"></app-title>
+  <p>
+    O <i>Sharp_Probe</i> é um projeto de graduação da Escola de Engenharia de São Carlos da disciplina <strong>SEL0373 - Projetos em Internet das Coisas</strong> 
+    Este projeto tem o obejtivo de demonstrar o funcionamento de uma sonda climática, apresentando dados como posição, altura e temperatura. 
+  </p>
 
-  Frase motivacional:
+  <p>
+    Foto da Sonda
+      <button type="button" class="btn btn-primary" onclick="doPublish">Requisitar Foto</button>
+  </p>
 
-  <div class="ratio ratio-16x9 w-100 w-lg-60 m-auto">
-    <blockquote class="twitter-tweet">
-      <p lang="pt" dir="ltr">Estude, porque Jesus te chamou pra ser ovelha e não anta.</p>
-      &mdash; nickmorettii (@nickmorettii)
-      <a
-        href="https://twitter.com/nickmorettii/status/1763279699050901910?ref_src=twsrc%5Etfw"
-        >February 29, 2024</a
-      >
-    </blockquote>
-    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+  <div>
+    Altura
+    <app-image-grid [gridItems]="altura"></app-image-grid>
   </div>
+
+  <div>
+    Temperatura
+    <app-image-grid [gridItems]="temperatura"></app-image-grid>
+  </div>
+
+  <div>
+    <p>Latitude e Longitude</p>
+  </div>
+
+  <div>
+    Umidade
+    <app-image-grid [gridItems]="umidade"></app-image-grid>
+  </div>
+  
 </section>

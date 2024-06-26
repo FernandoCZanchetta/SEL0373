@@ -1,0 +1,31 @@
+<app-page-title></app-page-title>
+
+<section class="text-justify m-auto">
+  <a id="home"></a>
+
+  <app-title [subtitle]="true"></app-title>
+  <p>
+    <button type="button" class="btn btn-primary" onclick="doPublish">DO PULSOVS</button>
+</p>
+
+    Colocar:
+    <ul>
+      <li>Dashboard com os dados que a gente precisa</li>
+      <li>Altitute, umidade</li>
+      <li>Modal com histórico e gráfico dos dados</li>
+      <li>Tirar fotos -> manda requisição mqtt (pacote ngx/mqtt) e receber ela</li>
+    </ul>
+
+  <app-alternating-layout [contents]="textAndImageList"></app-alternating-layout>
+
+  <section align="justify">
+    <a id="alojamento"></a>
+    <app-title [subtitle]="true">A senha do site é: Xcde54$45</app-title>
+  
+    <p>
+     Lorem Ipsu equemete
+    </p>
+  
+    <app-image-grid [gridItems]="exemplosPhotos" [large]="true"></app-image-grid>
+
+    <app-image-grid [gridItems]="modalExemplo"></app-image-grid>

@@ -54,8 +54,7 @@
 
 ---
 
-![Projeto IoT (1)-1](https://github.com/FernandoCZanchetta/SEL0373/assets/97488352/8e2142ff-6f87-4c10-bd34-8ed7d33f6676)
-![Projeto IoT (1)-2](https://github.com/FernandoCZanchetta/SEL0373/assets/97488352/364b2dd3-d43d-4e6a-90b2-a6c5d692b747)
+![Projeto IoT (1)-1](https://github.com/FernandoCZanchetta/SEL0373/assets/97488352/8e2142ff-6f87-4c10-bd34-8ed7d33f6676) ![Projeto IoT (1)-2](https://github.com/FernandoCZanchetta/SEL0373/assets/97488352/364b2dd3-d43d-4e6a-90b2-a6c5d692b747)
 
 <p align="center">
     <a href="https://sharpprobe-fernando-zanchettas-projects.vercel.app/">

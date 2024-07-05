@@ -1,4 +1,4 @@
-import * as MongoDB from 'mongodb'
+// import * as MongoDB from 'mongodb'
 
 export interface ProbeDataModel {
   latitude: number

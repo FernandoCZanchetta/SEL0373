@@ -1,5 +1,4 @@
 import { Component } from '@angular/core'
-import { SocialMedia, SocialMediaModel } from '@models'
 
 @Component({
   selector: 'app-footer',

@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core'
-import { AlternatingLayoutModel, ImageGridItemModel, ProbeDataModel } from '@models'
+import { Component } from '@angular/core'
+import { ImageGridItemModel, ProbeDataModel } from '@models'
 import { IMqttMessage, IMqttServiceOptions, MqttService, IPublishOptions } from 'ngx-mqtt'
 import { IClientSubscribeOptions } from 'mqtt-browser'
 import { Subscription } from 'rxjs'

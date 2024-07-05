@@ -1,19 +1,6 @@
 import { Component } from '@angular/core'
-import {
-  AlternatingLayoutModel,
-  ImageGridItemModel,
-  ImageModel,
-  ChartModel,
-} from '@models'
-import { SidebarService } from '@services'
-/* MQTT COMEÇO */
-import { IMqttServiceOptions, MqttService, IPublishOptions } from 'ngx-mqtt'
-import { IClientSubscribeOptions } from 'mqtt-browser'
-import { environment } from '../../../environments/environment'
-/* MQTT FINAL */
-import { MongoClient } from 'mongodb'
-
-import { Chart } from 'chart.js'
+import { AlternatingLayoutModel, ImageGridItemModel } from '@models'
+import { MqttService, IPublishOptions } from 'ngx-mqtt'
 
 @Component({
   selector: 'app-test-page',

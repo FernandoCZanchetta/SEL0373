@@ -1,6 +1,14 @@
 export const environment = {
   production: true,
 
+  MQTT_SERVICE_OPTIONS: {
+    hostname: 'igbt.eesc.usp.br',
+    port: 1883,
+    /** path: '/mqtt',**/
+    user: 'mqtt',
+    password: 'mqtt_123_abc',
+  },
+
   MONGO_DB: {
     MONGODB_URI: `mongodb+srv://${encodeURIComponent(
       'SharpProbeBridgeServer'
